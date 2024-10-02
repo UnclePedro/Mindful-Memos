@@ -137,12 +137,12 @@ const QuoteGenerator = () => {
                 >
                   <p className="font-bold text-lg text-center">{quote.quote}</p>
                   <p className="text-xs text-gray-600 mt-1">{quote.author}</p>
-                  <button
+                  {/* <button
                     className="mt-3 px-4 py-2 text-xs text-red-500 font-semibold bg-red-100 hover:bg-red-200 rounded-full transition-all"
                     onClick={() => deleteQuote(quote.id)}
                   >
                     Delete
-                  </button>
+                  </button> */}
                 </li>
               ))}
             </ul>
