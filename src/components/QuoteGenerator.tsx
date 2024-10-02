@@ -47,23 +47,23 @@ const QuoteGenerator = () => {
     }
   };
 
-  // Function to delete selected quote from database
-  const deleteQuote = async (id: number) => {
-    const response = await fetch(`${url}/deleteQuote`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
-    });
+  // // Function to delete selected quote from database
+  // const deleteQuote = async (id: number) => {
+  //   const response = await fetch(`${url}/deleteQuote`, {
+  //     method: "DELETE",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ id }),
+  //   });
 
-    const result = await response.json();
-    if (response.ok) {
-      getUserQuotes();
-    } else {
-      console.error("Error deleting quote:", result.error);
-    }
-  };
+  //   const result = await response.json();
+  //   if (response.ok) {
+  //     getUserQuotes();
+  //   } else {
+  //     console.error("Error deleting quote:", result.error);
+  //   }
+  // };
 
   // Function to fetch a random quote (default OR user) from the API
   const getRandomQuote = async () => {
@@ -136,7 +136,9 @@ const QuoteGenerator = () => {
                   className="w-full bg-blue-100 p-4 rounded-lg shadow-md flex flex-col items-center"
                 >
                   <p className="font-bold text-lg text-center">{quote.quote}</p>
-                  <p className="text-xs text-gray-600 mt-1">{quote.author}</p>
+                  <p className="text-xs text-gray-600 mt-1 italic">
+                    {quote.author}
+                  </p>
                   {/* <button
                     className="mt-3 px-4 py-2 text-xs text-red-500 font-semibold bg-red-100 hover:bg-red-200 rounded-full transition-all"
                     onClick={() => deleteQuote(quote.id)}
