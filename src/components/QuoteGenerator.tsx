@@ -36,8 +36,6 @@ const QuoteGenerator = () => {
       }),
     });
 
-    console.log(response);
-
     if (response.ok) {
       // Empty the data in newUserQuote
       setNewUserQuote(emptyQuoteObj);
@@ -70,15 +68,13 @@ const QuoteGenerator = () => {
   // Function to fetch a random quote (default OR user) from the API
   const getRandomQuote = async () => {
     const response = await axios.get(`${url}/randomquote`);
-    setRandomQuote(response.data); // Update state with the random quote
-    console.log(randomQuote);
+    setRandomQuote(response.data);
   };
 
   // Function to handle the GET request to fetch all quotes
   const getUserQuotes = async () => {
     const response = await axios.get(`${url}/quotes`);
-    console.log(response);
-    setUserQuotes(response.data); // Update the state with the new quotes
+    setUserQuotes(response.data);
   };
 
   // useEffect hook to trigger API calls when the component mounts
@@ -112,7 +108,7 @@ const QuoteGenerator = () => {
           onChange={(e) =>
             setNewUserQuote({ ...newUserQuote, author: e.target.value })
           }
-          placeholder="Enter the author"
+          placeholder="Author"
           className="p-2 m-2 rounded-lg text-black bg-slate-300"
         />
         <button
@@ -130,10 +126,13 @@ const QuoteGenerator = () => {
             <ul>
               {userQuotes.map((quote) => (
                 <div
-                  className="flex w-fit p-2 m-2 justify-center bg-blue-500 rounded-lg"
+                  className="w-fit p-2 m-2 justify-center bg-blue-500 rounded-lg"
                   key={quote.id}
                 >
-                  <li>{quote.quote}</li>
+                  <li className="font-bold">{quote.quote}</li>
+                  <div className="flex p-2">
+                    <li className="text-xs">{quote.author}</li>
+                  </div>
                   <button
                     className="px-2 font-bold"
                     onClick={() => deleteQuote(quote.id)}
