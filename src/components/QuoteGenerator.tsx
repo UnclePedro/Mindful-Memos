@@ -84,7 +84,7 @@ const QuoteGenerator = () => {
   }, []);
 
   return (
-    <div className="m-10">
+    <div className="lg:m-10">
       {/* Display the random quote */}
       <div className="p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold mb-2">{randomQuote.quote}</h2>
