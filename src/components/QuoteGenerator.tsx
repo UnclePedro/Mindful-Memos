@@ -12,20 +12,16 @@ const QuoteGenerator = () => {
     author: string;
     id: number;
   }
-  const [randomQuote, setRandomQuote] = useState<Quote>({
-    quote: "Fetching quote...",
-    author: "Unknown",
-    id: 0,
-  });
-  const [newUserQuote, setNewUserQuote] = useState("");
-  const [displayUserQuote, setDisplayUserQuote] = useState<Quote[]>([]);
 
-  // Function to fetch a random quote from the API
-  const getRandomQuote = async () => {
-    const response = await axios.get(`${url}/randomquote`);
-    setRandomQuote(response.data); // Update state with the random quote
-    console.log(randomQuote);
+  const emptyQuoteObj: Quote = {
+    quote: "",
+    author: "",
+    id: 0,
   };
+
+  const [randomQuote, setRandomQuote] = useState<Quote>(emptyQuoteObj);
+  const [newUserQuote, setNewUserQuote] = useState<Quote>(emptyQuoteObj);
+  const [userQuotes, setUserQuotes] = useState<Quote[]>([]);
 
   // Function to handle the POST request to add a new quote
   const addQuote = async () => {
@@ -34,17 +30,20 @@ const QuoteGenerator = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ quote: newUserQuote }), // Send the new quote as JSON
+      body: JSON.stringify({
+        quote: newUserQuote.quote,
+        author: newUserQuote.author,
+      }),
     });
 
     console.log(response);
 
     if (response.ok) {
-      // Clear input and refresh quote count or other relevant data
-      setNewUserQuote("");
+      // Empty the data in newUserQuote
+      setNewUserQuote(emptyQuoteObj);
 
       // Trigger getAddedQuote get request
-      getDatabaseQuotes();
+      getUserQuotes();
     } else {
       console.error("Failed to add quote");
     }
@@ -62,23 +61,30 @@ const QuoteGenerator = () => {
 
     const result = await response.json();
     if (response.ok) {
-      getDatabaseQuotes();
+      getUserQuotes();
     } else {
       console.error("Error deleting quote:", result.error);
     }
   };
 
+  // Function to fetch a random quote (default OR user) from the API
+  const getRandomQuote = async () => {
+    const response = await axios.get(`${url}/randomquote`);
+    setRandomQuote(response.data); // Update state with the random quote
+    console.log(randomQuote);
+  };
+
   // Function to handle the GET request to fetch all quotes
-  const getDatabaseQuotes = async () => {
+  const getUserQuotes = async () => {
     const response = await axios.get(`${url}/quotes`);
     console.log(response);
-    setDisplayUserQuote(response.data); // Update the state with the new quotes
+    setUserQuotes(response.data); // Update the state with the new quotes
   };
 
   // useEffect hook to trigger API calls when the component mounts
   useEffect(() => {
     getRandomQuote();
-    getDatabaseQuotes();
+    getUserQuotes();
   }, []);
 
   return (
@@ -92,9 +98,21 @@ const QuoteGenerator = () => {
         <h2 className="text-xl font-bold">Leave a quote:</h2>
         <input
           type="text"
-          value={newUserQuote}
-          onChange={(e) => setNewUserQuote(e.target.value)} // Update new quote state
+          value={newUserQuote.quote}
+          onChange={(e) =>
+            setNewUserQuote({ ...newUserQuote, quote: e.target.value })
+          }
           placeholder="Enter a new quote"
+          className="p-2 m-2 rounded-lg text-black bg-slate-300"
+        />
+
+        <input
+          type="text"
+          value={newUserQuote.author}
+          onChange={(e) =>
+            setNewUserQuote({ ...newUserQuote, author: e.target.value })
+          }
+          placeholder="Enter the author"
           className="p-2 m-2 rounded-lg text-black bg-slate-300"
         />
         <button
@@ -108,9 +126,9 @@ const QuoteGenerator = () => {
       <div className="p-4">
         <h2 className="text-xl font-bold">✨ Quotes from the people ✨</h2>
         <div className="flex justify-center align-middle">
-          {displayUserQuote.length > 0 ? (
+          {userQuotes.length > 0 ? (
             <ul>
-              {displayUserQuote.map((quote) => (
+              {userQuotes.map((quote) => (
                 <div
                   className="flex w-fit p-2 m-2 justify-center bg-blue-500 rounded-lg"
                   key={quote.id}
