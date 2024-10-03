@@ -3,7 +3,7 @@ import axios from "axios";
 import { generateUserId } from "../helpers/userAuthHelper";
 import { Fade } from "react-awesome-reveal";
 import Icon from "./Icon";
-import user from "/src/iconography/user.svg";
+import user from "/src/assets/iconography/user.svg";
 
 const url = "https://random-quote-generator-api.vercel.app";
 
@@ -129,7 +129,8 @@ const QuoteGenerator = () => {
                 />
                 <div className="mt-4 italic text-xs">
                   <p>
-                    Use this ID on other devices <br /> to edit your memos
+                    Use this, or your own custom ID
+                    <br /> across devices to edit your memos
                   </p>
                 </div>
               </div>
