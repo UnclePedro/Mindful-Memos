@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { generateUserId } from "../helpers/userAuthHelper";
 import { Fade } from "react-awesome-reveal";
+import Icon from "./Icon";
+import user from "/src/iconography/user.svg";
 
 const url = "https://random-quote-generator-api.vercel.app";
 
@@ -92,26 +94,30 @@ const QuoteGenerator = () => {
   }, []);
 
   return (
-    <Fade>
+    <Fade triggerOnce={true}>
       <div className="lg:m-10">
-        <button
-          onClick={() => setEditUserId(true)}
-          className="text-xs fixed top-4 right-4 p-2 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
-        >
-          User ID
-        </button>
+        <div className="relative flex justify-end items-start p-4">
+          <button
+            onClick={() => setEditUserId(true)}
+            className="-mt-32 -mr-10  transition"
+          >
+            <div className="w-11 sm:w-14">
+              <Icon iconImg={user} alt={"close"} />
+            </div>
+          </button>
+        </div>
 
         {editUserId && (
-          <Fade duration={300}>
+          <Fade duration={300} triggerOnce={true}>
             <div className="fixed inset-0 bg-black bg-opacity-65 flex justify-center items-center z-50">
               <div className="bg-white p-6 rounded-lg shadow-lg relative">
                 <button
                   onClick={() => setEditUserId(false)}
-                  className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+                  className="absolute top-2 right-2 text-gray-600"
                 >
                   ✖
                 </button>
-                <p className="mb-2">User ID:</p>
+                <p className="mb-2 font-bold">User ID:</p>
                 <input
                   type="text"
                   onChange={(e) => {
@@ -121,6 +127,11 @@ const QuoteGenerator = () => {
                   value={userId}
                   className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
                 />
+                <div className="mt-4 italic text-xs">
+                  <p>
+                    Use this ID on other devices <br /> to edit your memos
+                  </p>
+                </div>
               </div>
             </div>
           </Fade>
@@ -129,10 +140,14 @@ const QuoteGenerator = () => {
         {/* Display the random quote */}
         {randomQuote.quote.length > 0 ? (
           <div className="p-6 rounded-lg shadow-lg bg-white">
-            <h2 className="text-2xl font-semibold mb-2">{randomQuote.quote}</h2>
-            <p className="text-right italic text-gray-700">
-              {randomQuote.author}
-            </p>
+            <Fade triggerOnce={true}>
+              <h2 className="text-2xl font-semibold mb-2">
+                {randomQuote.quote}
+              </h2>
+              <p className="text-right italic text-gray-700">
+                {randomQuote.author}
+              </p>
+            </Fade>
           </div>
         ) : (
           <div className="p-6 mt-6 bg-white rounded-lg shadow-lg">
@@ -176,9 +191,9 @@ const QuoteGenerator = () => {
           <h2 className="text-xl font-semibold mb-4">Visitors memos:</h2>
           <div className="flex flex-col items-center">
             {userQuotes.length > 0 ? (
-              <Fade>
-                <ul className="space-y-4">
-                  {userQuotes.map((quote) => (
+              <ul className="space-y-4">
+                {userQuotes.map((quote) => (
+                  <div>
                     <li
                       key={quote.quoteId}
                       className="w-full bg-blue-100 p-4 rounded-lg shadow-md flex flex-col items-center"
@@ -198,9 +213,9 @@ const QuoteGenerator = () => {
                         </button>
                       )}
                     </li>
-                  ))}
-                </ul>
-              </Fade>
+                  </div>
+                ))}
+              </ul>
             ) : (
               <p className="text-gray-500">Loading memos...</p>
             )}
