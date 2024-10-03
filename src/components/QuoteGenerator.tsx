@@ -161,9 +161,7 @@ const QuoteGenerator = () => {
 
       {/* Display user-added quotes */}
       <div className="p-6 mt-6 bg-white rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">
-          ✨ Quotes from the people ✨
-        </h2>
+        <h2 className="text-xl font-semibold mb-4">Visitors memos:</h2>
         <div className="flex flex-col items-center">
           {userQuotes.length > 0 ? (
             <ul className="space-y-4">
