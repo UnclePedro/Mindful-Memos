@@ -140,14 +140,10 @@ const QuoteGenerator = () => {
         {/* Display the random quote */}
         {randomQuote.quote.length > 0 ? (
           <div className="p-6 rounded-lg shadow-lg bg-white">
-            <Fade triggerOnce={true}>
-              <h2 className="text-2xl font-semibold mb-2">
-                {randomQuote.quote}
-              </h2>
-              <p className="text-right italic text-gray-700">
-                {randomQuote.author}
-              </p>
-            </Fade>
+            <h2 className="text-2xl font-semibold mb-2">{randomQuote.quote}</h2>
+            <p className="text-right italic text-gray-700">
+              {randomQuote.author}
+            </p>
           </div>
         ) : (
           <div className="p-6 mt-6 bg-white rounded-lg shadow-lg">
