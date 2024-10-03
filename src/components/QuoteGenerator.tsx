@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { generateUserId } from "../helpers/userAuthHelper";
 
-const url = "http://localhost:8080";
+const url = "https://random-quote-generator-api.vercel.app";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
