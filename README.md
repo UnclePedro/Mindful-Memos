@@ -1,6 +1,8 @@
 # Mindful Memos
 
-Read and curate mindful thoughts and share them with other users using this elegant full-stack app.
+Read and curate mindful thoughts and share them with other users using this elegant full-stack app. 
+
+Check out the backend [here](https://github.com/UnclePedro/Mindful-Memos-Backend).
 
 ## Features
 - Recieve a random inspirational quote from historical figures
