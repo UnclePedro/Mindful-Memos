@@ -9,7 +9,7 @@ Check out the backend [here](https://github.com/UnclePedro/Mindful-Memos-Backend
 - Leave your own mindful thoughts for other users to view
 - Edit your own content with an auto-generated user ID, allowing cross-device content curation
 
-- ## Developed Using
+## Developed Using
 - [React](https://react.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Node.js](https://nodejs.org/en)
