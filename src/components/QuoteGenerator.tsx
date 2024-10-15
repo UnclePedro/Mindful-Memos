@@ -154,7 +154,7 @@ const QuoteGenerator = () => {
 
         {/* Section for leaving a new quote */}
         <div className="p-6 mt-6 bg-white rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold mb-4">Leave a quote:</h2>
+          <h2 className="text-xl font-semibold mb-4">Leave a memo:</h2>
           <div className="flex flex-col gap-4">
             <input
               type="text"
@@ -162,7 +162,7 @@ const QuoteGenerator = () => {
               onChange={(e) =>
                 setNewUserQuote({ ...newUserQuote, quote: e.target.value })
               }
-              placeholder="Enter a new quote"
+              placeholder="Enter a new memo"
               className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
             />
             <input
@@ -178,7 +178,7 @@ const QuoteGenerator = () => {
               onClick={addQuote}
               className="p-3 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg"
             >
-              Add Quote
+              Add Memo
             </button>
           </div>
         </div>
