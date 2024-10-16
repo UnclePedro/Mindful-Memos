@@ -31,6 +31,25 @@ const QuoteGenerator = () => {
   const [userId, setUserId] = useState(localStorage.getItem("userId") || "");
   const [editUserId, setEditUserId] = useState(false); // State to control modal visibility
 
+  async function createNewUser() {
+    try {
+      const response = await fetch("/generateUser", {
+        method: "GET",
+      });
+
+      const data = await response.json();
+
+      // Now you have access to the new user data
+      console.log("API Key:", data.user.apiKey);
+      console.log("Username:", data.user.username);
+
+      // You could store the API key in localStorage or state, if needed
+      localStorage.setItem("apiKey", data.user.apiKey);
+    } catch (error) {
+      console.error("Failed to create new user");
+    }
+  }
+
   // Function to handle the POST request to add a new quote
   const addQuote = async () => {
     const response = await fetch(`${url}/addQuote`, {
@@ -90,6 +109,7 @@ const QuoteGenerator = () => {
   useEffect(() => {
     getRandomQuote();
     getUserQuotes();
+    createNewUser();
     setUserId(generateUserId());
   }, []);
 
