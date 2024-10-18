@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { generateUserId } from "../helpers/userAuthHelper";
 import { Fade } from "react-awesome-reveal";
 import Icon from "./Icon";
 import user from "/src/assets/iconography/user.svg";
 
-const url = "https://random-quote-generator-api.vercel.app";
+const url = "http://localhost:8080";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
@@ -15,43 +14,47 @@ const QuoteGenerator = () => {
     quote: string;
     author: string;
     quoteId: number;
-    userId: string;
+    apiKey: string;
   }
 
   const emptyQuoteObj: Quote = {
     quote: "",
     author: "",
     quoteId: 0,
-    userId: "",
+    apiKey: "",
   };
 
   const [randomQuote, setRandomQuote] = useState<Quote>(emptyQuoteObj);
   const [newUserQuote, setNewUserQuote] = useState<Quote>(emptyQuoteObj);
   const [userQuotes, setUserQuotes] = useState<Quote[]>([]);
-  const [userId, setUserId] = useState(localStorage.getItem("userId") || "");
-  const [editUserId, setEditUserId] = useState(false); // State to control modal visibility
+  const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey") || "");
 
-  async function createNewUser() {
-    try {
-      const response = await fetch("/generateUser", {
-        method: "GET",
-      });
+  // const [editUserId, setEditUserId] = useState(false); // State to control modal visibility
 
-      const data = await response.json();
+  const createNewUser = async () => {
+    let apiKey = localStorage.getItem("apiKey");
+    if (!apiKey)
+      try {
+        const response = await fetch(`${url}/generateUser`, {
+          method: "POST",
+        });
 
-      // Now you have access to the new user data
-      console.log("API Key:", data.user.apiKey);
-      console.log("Username:", data.user.username);
+        const data = await response.json();
 
-      // You could store the API key in localStorage or state, if needed
-      localStorage.setItem("apiKey", data.user.apiKey);
-    } catch (error) {
-      console.error("Failed to create new user");
-    }
-  }
+        // Now you have access to the new user data
+        console.log("API Key:", data.newUser.apiKey);
+
+        localStorage.setItem("apiKey", data.newUser.apiKey);
+      } catch (error) {
+        console.error("Failed to create new user: frontend");
+      }
+  };
 
   // Function to handle the POST request to add a new quote
   const addQuote = async () => {
+    // if (localStorage.getItem("apiKey")) {
+    //   createNewUser();
+    // }
     const response = await fetch(`${url}/addQuote`, {
       method: "POST",
       headers: {
@@ -60,7 +63,7 @@ const QuoteGenerator = () => {
       body: JSON.stringify({
         quote: newUserQuote.quote,
         author: newUserQuote.author,
-        userId: userId,
+        apiKey: apiKey,
       }),
     });
 
@@ -110,13 +113,12 @@ const QuoteGenerator = () => {
     getRandomQuote();
     getUserQuotes();
     createNewUser();
-    setUserId(generateUserId());
   }, []);
 
   return (
     <Fade triggerOnce={true}>
       <div className="lg:m-10">
-        <div className="relative flex justify-end items-start p-4">
+        {/* <div className="relative flex justify-end items-start p-4">
           <button
             onClick={() => setEditUserId(true)}
             className="-mt-32 -mr-10  transition"
@@ -125,9 +127,9 @@ const QuoteGenerator = () => {
               <Icon iconImg={user} alt={"close"} />
             </div>
           </button>
-        </div>
+        </div> */}
 
-        {editUserId && (
+        {/* {editUserId && (
           <Fade duration={300} triggerOnce={true}>
             <div className="fixed inset-0 bg-black bg-opacity-65 flex justify-center h-screen items-center z-50">
               <div className="bg-white p-6 rounded-lg shadow-lg relative">
@@ -156,7 +158,7 @@ const QuoteGenerator = () => {
               </div>
             </div>
           </Fade>
-        )}
+        )} */}
 
         {/* Display the random quote */}
         {randomQuote.quote.length > 0 ? (
@@ -221,14 +223,14 @@ const QuoteGenerator = () => {
                       <p className="text-xs text-gray-600 mt-1 italic">
                         {quote.author}
                       </p>
-                      {quote.userId === userId && (
+                      {/* {quote.user === user && (
                         <button
                           className="mt-3 px-4 py-2 text-xs text-red-500 font-semibold bg-red-100 hover:bg-red-200 rounded-full transition-all"
                           onClick={() => deleteQuote(quote.quoteId)}
                         >
                           Delete
                         </button>
-                      )}
+                      )} */}
                     </li>
                   </div>
                 ))}
