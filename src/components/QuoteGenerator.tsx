@@ -13,24 +13,33 @@ const QuoteGenerator = () => {
   interface Quote {
     quote: string;
     author: string;
+    authorId: number;
     quoteId: number;
   }
 
   const emptyQuoteObj: Quote = {
     quote: "",
     author: "",
+    authorId: 0,
     quoteId: 0,
   };
 
+  interface User {
+    id: number;
+    apiKey: string;
+  }
+
+  const [user, setUser] = useState<User>();
   const [randomQuote, setRandomQuote] = useState<Quote>(emptyQuoteObj);
   const [newUserQuote, setNewUserQuote] = useState<Quote>(emptyQuoteObj);
   const [userQuotes, setUserQuotes] = useState<Quote[]>([]);
 
   // const [editUserId, setEditUserId] = useState(false); // State to control modal visibility
 
+  // NEED TO GET getUser AND addQuote TO SEND USER.APIKEY TO THE BACKEND, CURRENTLY SENDING AS UNDEFINED
   const getUser = async () => {
-    let apiKey = localStorage.getItem("apiKey");
-    if (!apiKey)
+    let user = localStorage.getItem("user");
+    if (!user)
       try {
         const response = await fetch(`${url}/generateUser`, {
           method: "POST",
@@ -39,18 +48,21 @@ const QuoteGenerator = () => {
         const data = await response.json();
 
         // Now you have access to the new user data
-        console.log("API Key:", data.newUser.apiKey);
+        console.log("API Key:", data.newUser);
 
-        localStorage.setItem("apiKey", data.newUser.apiKey);
+        localStorage.setItem("user", JSON.stringify(data.newUser));
+        setUser(data.newUser);
+        return data.newUser;
       } catch (error) {
         console.error("Failed to create new user: frontend");
       }
+    return user;
   };
 
   // Function to handle the POST request to add a new quote
   const addQuote = async () => {
     // Check if apiKey is stored in localStorage
-    const apiKey = await getUser();
+    const user = await getUser();
 
     const response = await fetch(`${url}/addQuote`, {
       method: "POST",
@@ -60,7 +72,7 @@ const QuoteGenerator = () => {
       body: JSON.stringify({
         quote: newUserQuote.quote,
         author: newUserQuote.author,
-        apiKey: apiKey,
+        user: user.apiKey,
       }),
     });
 
@@ -77,17 +89,27 @@ const QuoteGenerator = () => {
 
   // Function to delete selected quote from database
   const deleteQuote = async (quoteId: number) => {
+    // Retrieve and parse the user object from localStorage in one line
+    const user = JSON.parse(localStorage.getItem("user") ?? "null");
+
+    // If user or apiKey is missing, log an error and return
+    if (!user?.apiKey) {
+      console.error("API key not found or user is not logged in");
+      return;
+    }
+
+    // Proceed with the DELETE request
     const response = await fetch(`${url}/deleteQuote`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ quoteId }),
+      body: JSON.stringify({ quoteId, apiKey: user.apiKey }),
     });
 
     const result = await response.json();
     if (response.ok) {
-      getUserQuotes();
+      getUserQuotes(); // Refresh the quotes
     } else {
       console.error("Error deleting quote:", result.error);
     }
@@ -220,14 +242,14 @@ const QuoteGenerator = () => {
                       <p className="text-xs text-gray-600 mt-1 italic">
                         {quote.author}
                       </p>
-                      {/* {quote.user === user && (
+                      {quote.authorId === user?.id && (
                         <button
                           className="mt-3 px-4 py-2 text-xs text-red-500 font-semibold bg-red-100 hover:bg-red-200 rounded-full transition-all"
                           onClick={() => deleteQuote(quote.quoteId)}
                         >
                           Delete
                         </button>
-                      )} */}
+                      )}
                     </li>
                   </div>
                 ))}
