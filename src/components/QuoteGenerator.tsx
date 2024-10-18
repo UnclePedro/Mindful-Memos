@@ -14,24 +14,21 @@ const QuoteGenerator = () => {
     quote: string;
     author: string;
     quoteId: number;
-    apiKey: string;
   }
 
   const emptyQuoteObj: Quote = {
     quote: "",
     author: "",
     quoteId: 0,
-    apiKey: "",
   };
 
   const [randomQuote, setRandomQuote] = useState<Quote>(emptyQuoteObj);
   const [newUserQuote, setNewUserQuote] = useState<Quote>(emptyQuoteObj);
   const [userQuotes, setUserQuotes] = useState<Quote[]>([]);
-  const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey") || "");
 
   // const [editUserId, setEditUserId] = useState(false); // State to control modal visibility
 
-  const createNewUser = async () => {
+  const getUser = async () => {
     let apiKey = localStorage.getItem("apiKey");
     if (!apiKey)
       try {
@@ -52,9 +49,9 @@ const QuoteGenerator = () => {
 
   // Function to handle the POST request to add a new quote
   const addQuote = async () => {
-    // if (localStorage.getItem("apiKey")) {
-    //   createNewUser();
-    // }
+    // Check if apiKey is stored in localStorage
+    const apiKey = await getUser();
+
     const response = await fetch(`${url}/addQuote`, {
       method: "POST",
       headers: {
@@ -112,7 +109,7 @@ const QuoteGenerator = () => {
   useEffect(() => {
     getRandomQuote();
     getUserQuotes();
-    createNewUser();
+    getUser();
   }, []);
 
   return (
