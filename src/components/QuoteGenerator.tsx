@@ -29,14 +29,19 @@ const QuoteGenerator = () => {
     apiKey: string;
   }
 
-  const [user, setUser] = useState<User>();
+  const emptyUser: User = {
+    id: 0,
+    apiKey: "",
+  };
+
+  const [user, setUser] = useState<User>(emptyUser);
   const [randomQuote, setRandomQuote] = useState<Quote>(emptyQuoteObj);
   const [newUserQuote, setNewUserQuote] = useState<Quote>(emptyQuoteObj);
   const [userQuotes, setUserQuotes] = useState<Quote[]>([]);
 
   // const [editUserId, setEditUserId] = useState(false); // State to control modal visibility
 
-  // getUser function to retrieve the user from localStorage or create a new one
+  // Retrieve the user from localStorage or create a new one
   const getUser = async () => {
     let user = localStorage.getItem("user");
     if (!user) {
@@ -69,7 +74,7 @@ const QuoteGenerator = () => {
       body: JSON.stringify({
         quote: newUserQuote.quote,
         author: newUserQuote.author,
-        apiKey: user?.apiKey,
+        apiKey: user.apiKey,
       }),
     });
 
@@ -88,7 +93,7 @@ const QuoteGenerator = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: quoteId, apiKey: user?.apiKey }),
+      body: JSON.stringify({ id: quoteId, apiKey: user.apiKey }),
     });
 
     const result = await response.json();
@@ -232,7 +237,7 @@ const QuoteGenerator = () => {
                       <p className="text-xs text-gray-600 mt-1 italic">
                         {quote.author}
                       </p>
-                      {quote.authorId === user?.id && (
+                      {quote.authorId === user.id && (
                         <button
                           className="mt-3 px-4 py-2 text-xs text-red-500 font-semibold bg-red-100 hover:bg-red-200 rounded-full transition-all"
                           onClick={() => deleteQuote(quote.quoteId)}
