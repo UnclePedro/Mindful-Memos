@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Fade } from "react-awesome-reveal";
-import Icon from "./Icon";
-import user from "/src/assets/iconography/user.svg";
+// import Icon from "./Icon";
+// import user from "/src/assets/iconography/user.svg";
 
 const url = "http://localhost:8080";
 
@@ -14,14 +14,14 @@ const QuoteGenerator = () => {
     quote: string;
     author: string;
     authorId: number;
-    quoteId: number;
+    id: number;
   }
 
   const emptyQuoteObj: Quote = {
     quote: "",
     author: "",
     authorId: 0,
-    quoteId: 0,
+    id: 0,
   };
 
   interface User {
@@ -87,7 +87,6 @@ const QuoteGenerator = () => {
   };
 
   const deleteQuote = async (quoteId: number) => {
-    // Proceed with the DELETE request
     const response = await fetch(`${url}/deleteQuote`, {
       method: "DELETE",
       headers: {
@@ -228,7 +227,7 @@ const QuoteGenerator = () => {
                 {userQuotes.map((quote) => (
                   <div>
                     <li
-                      key={quote.quoteId}
+                      key={quote.id}
                       className="w-full bg-blue-100 p-4 rounded-lg shadow-md flex flex-col items-center"
                     >
                       <p className="font-bold text-lg text-center">
@@ -240,7 +239,7 @@ const QuoteGenerator = () => {
                       {quote.authorId === user.id && (
                         <button
                           className="mt-3 px-4 py-2 text-xs text-red-500 font-semibold bg-red-100 hover:bg-red-200 rounded-full transition-all"
-                          onClick={() => deleteQuote(quote.quoteId)}
+                          onClick={() => deleteQuote(quote.id)}
                         >
                           Delete
                         </button>
