@@ -1,10 +1,15 @@
+// At the moment, a user can only open and edit their User details if they've added a quote.
+// This prevents a user from opening the app on a different device and having the ability to input their details WITHOUT adding a new quote
+// I need to allow a user to inout their details and gain editor permission of their quotes immediately
+// Remove the displayEditUser if user
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Fade } from "react-awesome-reveal";
 import Icon from "./Icon";
 import userIcon from "/src/assets/iconography/user.svg";
 
-const url = "https://random-quote-generator-api.vercel.app";
+const url = "http://localhost:8080";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
@@ -131,18 +136,16 @@ const QuoteGenerator = () => {
   return (
     <Fade triggerOnce={true}>
       <div className="lg:m-10">
-        {user.id > 1 && (
-          <div className="relative flex justify-end items-start">
-            <button
-              onClick={() => setEditUser(true)}
-              className="-mt-28 -mr-18  transition"
-            >
-              <div className="w-11 sm:w-14">
-                <Icon iconImg={userIcon} alt={"close"} />
-              </div>
-            </button>
-          </div>
-        )}
+        <div className="relative flex justify-end items-start">
+          <button
+            onClick={() => setEditUser(true)}
+            className="-mt-28 -mr-18  transition"
+          >
+            <div className="w-11 sm:w-14">
+              <Icon iconImg={userIcon} alt={"close"} />
+            </div>
+          </button>
+        </div>
 
         {editUser && (
           <Fade duration={300} triggerOnce={true}>
@@ -162,7 +165,7 @@ const QuoteGenerator = () => {
                     setUser(updatedUser); // Set the updated user state
                     localStorage.setItem("user", JSON.stringify(updatedUser)); // Update localStorage
                   }}
-                  value={user.id}
+                  value={user.id > 0 ? user.id : "No user"}
                   className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
                 />
                 <p className="my-2 font-bold">User Password:</p>
@@ -173,7 +176,7 @@ const QuoteGenerator = () => {
                     setUser(updatedUser); // Set the updated user state
                     localStorage.setItem("user", JSON.stringify(updatedUser)); // Update localStorage
                   }}
-                  value={user.apiKey}
+                  value={user.apiKey.length > 0 ? user.apiKey : "No user"}
                   className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
                 />
                 <div className="mt-4 italic text-xs">
