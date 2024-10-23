@@ -36,34 +36,31 @@ const QuoteGenerator = () => {
 
   // const [editUserId, setEditUserId] = useState(false); // State to control modal visibility
 
-  // NEED TO GET getUser AND addQuote TO SEND USER.APIKEY TO THE BACKEND, CURRENTLY SENDING AS UNDEFINED
+  // getUser function to retrieve the user from localStorage or create a new one
   const getUser = async () => {
     let user = localStorage.getItem("user");
-    if (!user)
+    if (!user) {
       try {
         const response = await fetch(`${url}/generateUser`, {
           method: "POST",
         });
 
         const data = await response.json();
-
-        // Now you have access to the new user data
-        console.log("API Key:", data.newUser);
+        console.log("New user:", data.newUser);
 
         localStorage.setItem("user", JSON.stringify(data.newUser));
-        setUser(data.newUser);
+        setUser(data.newUser); // Set the new user in state
         return data.newUser;
       } catch (error) {
-        console.error("Failed to create new user: frontend");
+        console.error("Failed to create new user");
       }
-    return user;
+    } else {
+      setUser(JSON.parse(user)); // Set the existing user in the state
+      return JSON.parse(user);
+    }
   };
 
-  // Function to handle the POST request to add a new quote
   const addQuote = async () => {
-    // Check if apiKey is stored in localStorage
-    const user = await getUser();
-
     const response = await fetch(`${url}/addQuote`, {
       method: "POST",
       headers: {
@@ -72,39 +69,26 @@ const QuoteGenerator = () => {
       body: JSON.stringify({
         quote: newUserQuote.quote,
         author: newUserQuote.author,
-        user: user.apiKey,
+        apiKey: user?.apiKey,
       }),
     });
 
     if (response.ok) {
-      // Trigger getAddedQuote get request
       getUserQuotes();
-
-      // Empty the data in newUserQuote
-      setNewUserQuote(emptyQuoteObj);
+      setNewUserQuote(emptyQuoteObj); // Empty the data in newUserQuote
     } else {
       console.error("Failed to add quote");
     }
   };
 
-  // Function to delete selected quote from database
   const deleteQuote = async (quoteId: number) => {
-    // Retrieve and parse the user object from localStorage in one line
-    const user = JSON.parse(localStorage.getItem("user") ?? "null");
-
-    // If user or apiKey is missing, log an error and return
-    if (!user?.apiKey) {
-      console.error("API key not found or user is not logged in");
-      return;
-    }
-
     // Proceed with the DELETE request
     const response = await fetch(`${url}/deleteQuote`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ quoteId, apiKey: user.apiKey }),
+      body: JSON.stringify({ id: quoteId, apiKey: user?.apiKey }),
     });
 
     const result = await response.json();
@@ -131,7 +115,13 @@ const QuoteGenerator = () => {
   useEffect(() => {
     getRandomQuote();
     getUserQuotes();
-    getUser();
+    getUser()
+      .then((user) => {
+        setUser(user);
+      })
+      .catch(() => {
+        console.log("Error fetching user");
+      });
   }, []);
 
   return (
