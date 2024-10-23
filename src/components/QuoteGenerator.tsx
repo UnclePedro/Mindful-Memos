@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Fade } from "react-awesome-reveal";
-// import Icon from "./Icon";
-// import user from "/src/assets/iconography/user.svg";
+import Icon from "./Icon";
+import userIcon from "/src/assets/iconography/user.svg";
 
 const url = "https://random-quote-generator-api.vercel.app";
 
@@ -34,12 +34,14 @@ const QuoteGenerator = () => {
     apiKey: "",
   };
 
-  const [user, setUser] = useState<User>(emptyUser);
+  const [user, setUser] = useState<User>(() => {
+    const existingUser = localStorage.getItem("user");
+    return existingUser ? JSON.parse(existingUser) : emptyUser;
+  });
   const [randomQuote, setRandomQuote] = useState<Quote>(emptyQuoteObj);
   const [newUserQuote, setNewUserQuote] = useState<Quote>(emptyQuoteObj);
   const [userQuotes, setUserQuotes] = useState<Quote[]>([]);
-
-  // const [editUserId, setEditUserId] = useState(false); // State to control modal visibility
+  const [editUser, setEditUser] = useState(false); // State to control modal visibility
 
   // Retrieve the user from localStorage or create a new one
   const getUser = async () => {
@@ -51,8 +53,6 @@ const QuoteGenerator = () => {
         });
 
         const data = await response.json();
-        console.log("New user:", data.newUser);
-
         localStorage.setItem("user", JSON.stringify(data.newUser));
         setUser(data.newUser); // Set the new user in state
         return data.newUser;
@@ -66,6 +66,13 @@ const QuoteGenerator = () => {
   };
 
   const addQuote = async () => {
+    // Check if user exists, create one if not
+    let currentUser = user;
+    if (!currentUser.apiKey) {
+      currentUser = await getUser(); // Create new user if not available
+    }
+
+    // Proceed to add the quote
     const response = await fetch(`${url}/addQuote`, {
       method: "POST",
       headers: {
@@ -74,7 +81,7 @@ const QuoteGenerator = () => {
       body: JSON.stringify({
         quote: newUserQuote.quote,
         author: newUserQuote.author,
-        apiKey: user.apiKey,
+        apiKey: currentUser.apiKey, // Use the user's API key
       }),
     });
 
@@ -119,35 +126,30 @@ const QuoteGenerator = () => {
   useEffect(() => {
     getRandomQuote();
     getUserQuotes();
-    getUser()
-      .then((user) => {
-        setUser(user);
-      })
-      .catch(() => {
-        console.log("Error fetching user");
-      });
   }, []);
 
   return (
     <Fade triggerOnce={true}>
       <div className="lg:m-10">
-        {/* <div className="relative flex justify-end items-start p-4">
-          <button
-            onClick={() => setEditUserId(true)}
-            className="-mt-32 -mr-10  transition"
-          >
-            <div className="w-11 sm:w-14">
-              <Icon iconImg={user} alt={"close"} />
-            </div>
-          </button>
-        </div> */}
+        {user.id > 1 && (
+          <div className="relative flex justify-end items-start">
+            <button
+              onClick={() => setEditUser(true)}
+              className="-mt-28 -mr-18  transition"
+            >
+              <div className="w-11 sm:w-14">
+                <Icon iconImg={userIcon} alt={"close"} />
+              </div>
+            </button>
+          </div>
+        )}
 
-        {/* {editUserId && (
+        {editUser && (
           <Fade duration={300} triggerOnce={true}>
             <div className="fixed inset-0 bg-black bg-opacity-65 flex justify-center h-screen items-center z-50">
               <div className="bg-white p-6 rounded-lg shadow-lg relative">
                 <button
-                  onClick={() => setEditUserId(false)}
+                  onClick={() => setEditUser(false)}
                   className="absolute top-2 right-2 text-gray-600"
                 >
                   ✖
@@ -156,22 +158,34 @@ const QuoteGenerator = () => {
                 <input
                   type="text"
                   onChange={(e) => {
-                    setUserId(e.target.value);
-                    localStorage.setItem("userId", e.target.value);
+                    const updatedUser = { ...user, id: Number(e.target.value) }; // Update just the id
+                    setUser(updatedUser); // Set the updated user state
+                    localStorage.setItem("user", JSON.stringify(updatedUser)); // Update localStorage
                   }}
-                  value={userId}
+                  value={user.id}
+                  className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
+                />
+                <p className="my-2 font-bold">User Password:</p>
+                <input
+                  type="text"
+                  onChange={(e) => {
+                    const updatedUser = { ...user, apiKey: e.target.value }; // Update just the apiKey
+                    setUser(updatedUser); // Set the updated user state
+                    localStorage.setItem("user", JSON.stringify(updatedUser)); // Update localStorage
+                  }}
+                  value={user.apiKey}
                   className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
                 />
                 <div className="mt-4 italic text-xs">
                   <p>
-                    Use this, or your own custom ID
-                    <br /> across devices to edit your memos
+                    Copy these user details to edit
+                    <br /> your memos across devices.
                   </p>
                 </div>
               </div>
             </div>
           </Fade>
-        )} */}
+        )}
 
         {/* Display the random quote */}
         {randomQuote.quote.length > 0 ? (
