@@ -4,7 +4,7 @@ import { Fade } from "react-awesome-reveal";
 import Icon from "./Icon";
 import userIcon from "/src/assets/iconography/user.svg";
 
-const url = "http://localhost:8080";
+const url = "https://random-quote-generator-api.vercel.app";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
