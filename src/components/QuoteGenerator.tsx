@@ -35,6 +35,7 @@ const QuoteGenerator = () => {
   };
 
   const [user, setUser] = useState<User>(() => {
+    // This seems messed up
     const existingUser = localStorage.getItem("user");
     return existingUser ? JSON.parse(existingUser) : emptyUser;
   });
@@ -45,8 +46,7 @@ const QuoteGenerator = () => {
 
   // Retrieve the user from localStorage or create a new one
   const getUser = async () => {
-    let user = localStorage.getItem("user");
-    if (!user) {
+    if (!user || user.id === 0) {
       try {
         const response = await fetch(`${url}/generateUser`, {
           method: "POST",
@@ -54,25 +54,19 @@ const QuoteGenerator = () => {
 
         const data = await response.json();
         localStorage.setItem("user", JSON.stringify(data.newUser));
-        setUser(data.newUser); // Set the new user in state
+        setUser(data.newUser);
         return data.newUser;
       } catch (error) {
         console.error("Failed to create new user");
       }
     } else {
-      setUser(JSON.parse(user)); // Set the existing user in the state
-      return JSON.parse(user);
+      return user;
     }
   };
 
   const addQuote = async () => {
-    // Check if user exists, create one if not
-    let currentUser = user;
-    if (!currentUser.apiKey) {
-      currentUser = await getUser(); // Create new user if not available
-    }
+    const currentUser = await getUser();
 
-    // Proceed to add the quote
     const response = await fetch(`${url}/addQuote`, {
       method: "POST",
       headers: {
@@ -81,7 +75,8 @@ const QuoteGenerator = () => {
       body: JSON.stringify({
         quote: newUserQuote.quote,
         author: newUserQuote.author,
-        apiKey: currentUser.apiKey, // Use the user's API key
+        authorId: currentUser.id,
+        apiKey: currentUser.apiKey,
       }),
     });
 
@@ -110,19 +105,16 @@ const QuoteGenerator = () => {
     }
   };
 
-  // Function to fetch a random quote (default OR user) from the API
   const getRandomQuote = async () => {
     const response = await axios.get(`${url}/randomQuote`);
     setRandomQuote(response.data);
   };
 
-  // Function to handle the GET request to fetch all quotes
   const getUserQuotes = async () => {
     const response = await axios.get(`${url}/getUserQuotes`);
     setUserQuotes(response.data);
   };
 
-  // useEffect hook to trigger API calls when the component mounts
   useEffect(() => {
     getRandomQuote();
     getUserQuotes();
@@ -131,18 +123,16 @@ const QuoteGenerator = () => {
   return (
     <Fade triggerOnce={true}>
       <div className="lg:m-10">
-        {user.id > 1 && (
-          <div className="relative flex justify-end items-start">
-            <button
-              onClick={() => setEditUser(true)}
-              className="-mt-28 -mr-18  transition"
-            >
-              <div className="w-11 sm:w-14">
-                <Icon iconImg={userIcon} alt={"close"} />
-              </div>
-            </button>
-          </div>
-        )}
+        <div className="relative flex justify-end items-start">
+          <button
+            onClick={() => setEditUser(true)}
+            className="-mt-28 -mr-18  transition"
+          >
+            <div className="w-11 sm:w-14">
+              <Icon iconImg={userIcon} alt={"close"} />
+            </div>
+          </button>
+        </div>
 
         {editUser && (
           <Fade duration={300} triggerOnce={true}>
@@ -156,13 +146,14 @@ const QuoteGenerator = () => {
                 </button>
                 <p className="mb-2 font-bold">User ID:</p>
                 <input
-                  type="text"
+                  type="number"
                   onChange={(e) => {
                     const updatedUser = { ...user, id: Number(e.target.value) }; // Update just the id
                     setUser(updatedUser); // Set the updated user state
                     localStorage.setItem("user", JSON.stringify(updatedUser)); // Update localStorage
                   }}
-                  value={user.id}
+                  placeholder="No user ID"
+                  value={user.id > 0 ? user.id : undefined}
                   className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
                 />
                 <p className="my-2 font-bold">User Password:</p>
@@ -173,13 +164,15 @@ const QuoteGenerator = () => {
                     setUser(updatedUser); // Set the updated user state
                     localStorage.setItem("user", JSON.stringify(updatedUser)); // Update localStorage
                   }}
-                  value={user.apiKey}
+                  placeholder="No user password"
+                  value={user.apiKey.length > 0 ? user.apiKey : undefined}
                   className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
                 />
                 <div className="mt-4 italic text-xs">
                   <p>
-                    Copy these user details to edit
-                    <br /> your memos across devices.
+                    Leave a memo to generate user details.
+                    <br />
+                    Copy these details to edit your memos across devices.
                   </p>
                 </div>
               </div>
