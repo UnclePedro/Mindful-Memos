@@ -4,7 +4,7 @@ import { Fade } from "react-awesome-reveal";
 import Icon from "./Icon";
 import userIcon from "/src/assets/iconography/user.svg";
 
-const url = "https://random-quote-generator-api.vercel.app";
+const url = "http://localhost:8080";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
@@ -35,6 +35,7 @@ const QuoteGenerator = () => {
   };
 
   const [user, setUser] = useState<User>(() => {
+    // This seems messed up
     const existingUser = localStorage.getItem("user");
     return existingUser ? JSON.parse(existingUser) : emptyUser;
   });
@@ -64,13 +65,8 @@ const QuoteGenerator = () => {
   };
 
   const addQuote = async () => {
-    // Check if user exists, create one if not
-    let currentUser = user;
-    if (!currentUser.apiKey) {
-      currentUser = await getUser(); // Create new user if not available
-    }
+    const currentUser = await getUser();
 
-    // Proceed to add the quote
     const response = await fetch(`${url}/addQuote`, {
       method: "POST",
       headers: {
