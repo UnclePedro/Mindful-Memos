@@ -1,15 +1,10 @@
-// At the moment, a user can only open and edit their User details if they've added a quote.
-// This prevents a user from opening the app on a different device and having the ability to input their details WITHOUT adding a new quote
-// I need to allow a user to inout their details and gain editor permission of their quotes immediately
-// Remove the displayEditUser if user
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Fade } from "react-awesome-reveal";
 import Icon from "./Icon";
 import userIcon from "/src/assets/iconography/user.svg";
 
-const url = "http://localhost:8080";
+const url = "https://random-quote-generator-api.vercel.app";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
@@ -50,8 +45,7 @@ const QuoteGenerator = () => {
 
   // Retrieve the user from localStorage or create a new one
   const getUser = async () => {
-    let user = localStorage.getItem("user");
-    if (!user) {
+    if (!user || user.id === 0) {
       try {
         const response = await fetch(`${url}/generateUser`, {
           method: "POST",
@@ -65,8 +59,7 @@ const QuoteGenerator = () => {
         console.error("Failed to create new user");
       }
     } else {
-      setUser(JSON.parse(user)); // Set the existing user in the state
-      return JSON.parse(user);
+      return user;
     }
   };
 
@@ -86,7 +79,8 @@ const QuoteGenerator = () => {
       body: JSON.stringify({
         quote: newUserQuote.quote,
         author: newUserQuote.author,
-        apiKey: currentUser.apiKey, // Use the user's API key
+        authorId: currentUser.id,
+        apiKey: currentUser.apiKey,
       }),
     });
 
@@ -159,13 +153,14 @@ const QuoteGenerator = () => {
                 </button>
                 <p className="mb-2 font-bold">User ID:</p>
                 <input
-                  type="text"
+                  type="number"
                   onChange={(e) => {
                     const updatedUser = { ...user, id: Number(e.target.value) }; // Update just the id
                     setUser(updatedUser); // Set the updated user state
                     localStorage.setItem("user", JSON.stringify(updatedUser)); // Update localStorage
                   }}
-                  value={user.id > 0 ? user.id : "No user"}
+                  placeholder="No user ID"
+                  value={user.id > 0 ? user.id : undefined}
                   className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
                 />
                 <p className="my-2 font-bold">User Password:</p>
@@ -176,13 +171,15 @@ const QuoteGenerator = () => {
                     setUser(updatedUser); // Set the updated user state
                     localStorage.setItem("user", JSON.stringify(updatedUser)); // Update localStorage
                   }}
-                  value={user.apiKey.length > 0 ? user.apiKey : "No user"}
+                  placeholder="No user password"
+                  value={user.apiKey.length > 0 ? user.apiKey : undefined}
                   className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
                 />
                 <div className="mt-4 italic text-xs">
                   <p>
-                    Copy these user details to edit
-                    <br /> your memos across devices.
+                    Leave a memo to generate user details.
+                    <br />
+                    Copy these details to edit your memos across devices.
                   </p>
                 </div>
               </div>
