@@ -54,7 +54,7 @@ const QuoteGenerator = () => {
 
         const data = await response.json();
         localStorage.setItem("user", JSON.stringify(data.newUser));
-        setUser(data.newUser); // Set the new user in state
+        setUser(data.newUser);
         return data.newUser;
       } catch (error) {
         console.error("Failed to create new user");
@@ -105,19 +105,16 @@ const QuoteGenerator = () => {
     }
   };
 
-  // Function to fetch a random quote (default OR user) from the API
   const getRandomQuote = async () => {
     const response = await axios.get(`${url}/randomQuote`);
     setRandomQuote(response.data);
   };
 
-  // Function to handle the GET request to fetch all quotes
   const getUserQuotes = async () => {
     const response = await axios.get(`${url}/getUserQuotes`);
     setUserQuotes(response.data);
   };
 
-  // useEffect hook to trigger API calls when the component mounts
   useEffect(() => {
     getRandomQuote();
     getUserQuotes();
