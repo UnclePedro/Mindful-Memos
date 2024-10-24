@@ -231,8 +231,9 @@ const QuoteGenerator = () => {
           <div className="flex flex-col items-center">
             {userQuotes.length > 0 ? (
               <ul className="space-y-4">
-                {userQuotes.map((quote) => (
-                  <div>
+                {userQuotes
+                  .sort((quoteA, quoteB) => quoteA.id - quoteB.id) // Sort by quote id in ascending order
+                  .map((quote) => (
                     <li
                       key={quote.id}
                       className="w-full bg-blue-100 p-4 rounded-lg shadow-md flex flex-col items-center"
@@ -252,8 +253,7 @@ const QuoteGenerator = () => {
                         </button>
                       )}
                     </li>
-                  </div>
-                ))}
+                  ))}
               </ul>
             ) : (
               <p className="text-gray-500">Loading memos...</p>
