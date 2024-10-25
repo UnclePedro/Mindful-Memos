@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { User } from "./models/User";
 import { EditUserDetails } from "./components/EditUserDetails";
-import Memos from "./components/Memos";
+import Quotes from "./components/Quotes";
 
 function App() {
   const emptyUser: User = {
@@ -25,7 +25,7 @@ function App() {
         <p>Share an anecdote...</p>
       </div>
       <EditUserDetails user={user} updateUser={setUser} />
-      <Memos user={user} />
+      <Quotes user={user} />
     </>
   );
 }

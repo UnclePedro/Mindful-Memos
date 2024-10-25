@@ -1,12 +1,13 @@
 import axios from "axios";
 import { getUser } from "./userAuthenticationHelper";
 import { User } from "../models/User";
+import { emptyQuoteObj, Quote } from "../models/Quote";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
 const url = "http://localhost:8080";
 
-export const addQuote = async () => {
+export const addQuote = async (newUserQuote: Quote) => {
   const currentUser = await getUser();
 
   const response = await fetch(`${url}/addQuote`, {
@@ -24,7 +25,7 @@ export const addQuote = async () => {
 
   if (response.ok) {
     getUserQuotes();
-    setNewUserQuote(emptyQuoteObj); // Empty the data in newUserQuote
+    newUserQuote = emptyQuoteObj; // Empty the data in newUserQuote
   } else {
     console.error("Failed to add quote");
   }

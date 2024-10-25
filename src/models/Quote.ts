@@ -4,3 +4,10 @@ export interface Quote {
   authorId: number;
   id: number;
 }
+
+export const emptyQuoteObj: Quote = {
+  quote: "",
+  author: "",
+  authorId: 0,
+  id: 0,
+};
