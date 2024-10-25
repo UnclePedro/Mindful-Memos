@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Fade } from "react-awesome-reveal";
+// import { Fade } from "react-awesome-reveal";
 import { emptyQuoteObj, Quote } from "../models/Quote";
 import {
   addQuote,
@@ -67,7 +67,11 @@ const Memos = ({ user }: Props) => {
             className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
           />
           <button
-            onClick={() => addQuote(newUserQuote)}
+            onClick={async () => {
+              await addQuote(newUserQuote);
+              setUserQuotes(await getUserQuotes());
+              setNewUserQuote(emptyQuoteObj);
+            }}
             className="p-3 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg"
           >
             Add Memo
@@ -97,7 +101,10 @@ const Memos = ({ user }: Props) => {
                     {quote.authorId === user.id && (
                       <button
                         className="mt-3 px-4 py-2 text-xs text-red-500 font-semibold bg-red-100 hover:bg-red-200 rounded-full transition-all"
-                        onClick={() => deleteQuote(quote.id, user)}
+                        onClick={async () => {
+                          await deleteQuote(quote.id, user);
+                          setUserQuotes(await getUserQuotes());
+                        }}
                       >
                         Delete
                       </button>

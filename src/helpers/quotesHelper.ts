@@ -24,8 +24,7 @@ export const addQuote = async (newUserQuote: Quote) => {
   });
 
   if (response.ok) {
-    getUserQuotes();
-    newUserQuote = emptyQuoteObj; // Empty the data in newUserQuote
+    return emptyQuoteObj; // Empty the data in newUserQuote
   } else {
     console.error("Failed to add quote");
   }
