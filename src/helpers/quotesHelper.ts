@@ -7,7 +7,21 @@ import { Quote } from "../models/Quote";
 // http://localhost:8080
 const url = "https://random-quote-generator-api.vercel.app";
 
-export const addQuote = async (newUserQuote: Quote) => {
+export const addQuote = async (
+  newUserQuote: Quote,
+  setIsLoading: (loading: boolean) => void
+) => {
+  if (newUserQuote.quote === "") {
+    window.alert("Memo cannot be empty");
+    return null;
+  }
+  if (newUserQuote.author === "") {
+    window.alert("Author cannot be empty");
+    return null;
+  }
+
+  setIsLoading(true);
+
   const currentUser = await getUser();
 
   const response = await fetch(`${url}/addQuote`, {
@@ -24,13 +38,19 @@ export const addQuote = async (newUserQuote: Quote) => {
   });
 
   if (response.ok) {
+    setIsLoading(false);
     return currentUser; // update state with user data
   } else {
     console.error("Failed to add quote");
   }
 };
 
-export const deleteQuote = async (quoteId: number, user: User) => {
+export const deleteQuote = async (
+  quoteId: number,
+  user: User,
+  setIsLoading: (loading: boolean) => void
+) => {
+  setIsLoading(true);
   const response = await fetch(`${url}/deleteQuote`, {
     method: "DELETE",
     headers: {
@@ -42,6 +62,7 @@ export const deleteQuote = async (quoteId: number, user: User) => {
   const result = await response.json();
   if (response.ok) {
     getUserQuotes(); // Refresh the quotes
+    setIsLoading(false);
   } else {
     console.error("Error deleting quote:", result.error);
   }

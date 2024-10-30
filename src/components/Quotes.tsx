@@ -8,6 +8,7 @@ import {
   getUserQuotes,
 } from "../helpers/quotesHelper";
 import { User } from "../models/User";
+import { LoadingAnimation } from "./LoadingAnimation";
 
 interface Props {
   user: User;
@@ -18,6 +19,8 @@ const Memos = ({ user, updateUser }: Props) => {
   const [randomQuote, setRandomQuote] = useState<Quote>(emptyQuoteObj);
   const [newUserQuote, setNewUserQuote] = useState<Quote>(emptyQuoteObj);
   const [userQuotes, setUserQuotes] = useState<Quote[]>([]);
+  const [addQuoteLoading, setAddQuoteLoading] = useState(false);
+  const [deleteQuoteLoading, setDeleteQuoteLoading] = useState(false);
 
   useEffect(() => {
     getRandomQuote().then(setRandomQuote);
@@ -65,15 +68,15 @@ const Memos = ({ user, updateUser }: Props) => {
           />
           <button
             onClick={async () => {
-              await addQuote(newUserQuote).then(
+              await addQuote(newUserQuote, setAddQuoteLoading).then(
                 (returnedUser) => returnedUser && updateUser(returnedUser)
               );
               setUserQuotes(await getUserQuotes());
               setNewUserQuote(emptyQuoteObj);
             }}
-            className="p-3 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg"
+            className="p-3 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
           >
-            Add Memo
+            {addQuoteLoading ? <LoadingAnimation size={24} /> : "Add Memo"}
           </button>
         </div>
       </div>
@@ -99,13 +102,21 @@ const Memos = ({ user, updateUser }: Props) => {
                     </p>
                     {quote.authorId === user.id && (
                       <button
-                        className="mt-3 px-4 py-2 text-xs text-red-500 font-semibold bg-red-100 hover:bg-red-200 rounded-full transition-all"
+                        className="mt-3 px-4 py-2 text-xs text-white font-semibold bg-red-400 hover:bg-red-300 rounded-full transition-all"
                         onClick={async () => {
-                          await deleteQuote(quote.id, user);
+                          await deleteQuote(
+                            quote.id,
+                            user,
+                            setDeleteQuoteLoading
+                          );
                           setUserQuotes(await getUserQuotes());
                         }}
                       >
-                        Delete
+                        {deleteQuoteLoading ? (
+                          <LoadingAnimation size={16} />
+                        ) : (
+                          "Delete"
+                        )}
                       </button>
                     )}
                   </li>
