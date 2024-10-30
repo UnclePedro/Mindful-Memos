@@ -5,7 +5,7 @@ import { Quote } from "../models/Quote";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
-const url = "http://localhost:8080";
+const url = "https://random-quote-generator-api.vercel.app";
 
 export const addQuote = async (newUserQuote: Quote) => {
   const currentUser = await getUser();
