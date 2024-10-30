@@ -102,7 +102,7 @@ const Memos = ({ user, updateUser }: Props) => {
                     </p>
                     {quote.authorId === user.id && (
                       <button
-                        className="mt-3 px-4 py-2 text-xs text-white font-semibold bg-red-400 hover:bg-red-300 rounded-full transition-all"
+                        className="mt-3 px-4 py-2 text-xs text-white font-semibold bg-red-400 hover:bg-red-500 rounded-full transition-all"
                         onClick={async () => {
                           await deleteQuote(
                             quote.id,
