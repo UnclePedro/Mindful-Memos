@@ -11,20 +11,17 @@ import { User } from "../models/User";
 
 interface Props {
   user: User;
+  updateUser: (user: User) => void;
 }
 
-const Memos = ({ user }: Props) => {
+const Memos = ({ user, updateUser }: Props) => {
   const [randomQuote, setRandomQuote] = useState<Quote>(emptyQuoteObj);
   const [newUserQuote, setNewUserQuote] = useState<Quote>(emptyQuoteObj);
   const [userQuotes, setUserQuotes] = useState<Quote[]>([]);
 
   useEffect(() => {
-    getRandomQuote().then((randomQuoteResponse) => {
-      setRandomQuote(randomQuoteResponse);
-    });
-    getUserQuotes().then((userQuotesResponse) => {
-      setUserQuotes(userQuotesResponse);
-    });
+    getRandomQuote().then(setRandomQuote);
+    getUserQuotes().then(setUserQuotes);
   }, []);
 
   return (
@@ -68,7 +65,9 @@ const Memos = ({ user }: Props) => {
           />
           <button
             onClick={async () => {
-              await addQuote(newUserQuote);
+              await addQuote(newUserQuote).then(
+                (returnedUser) => returnedUser && updateUser(returnedUser)
+              );
               setUserQuotes(await getUserQuotes());
               setNewUserQuote(emptyQuoteObj);
             }}

@@ -4,18 +4,10 @@ import { Analytics } from "@vercel/analytics/react";
 import { User } from "./models/User";
 import { EditUserDetails } from "./components/EditUserDetails";
 import Quotes from "./components/Quotes";
+import { getUserFromLocalStorage } from "./helpers/userAuthenticationHelper";
 
 function App() {
-  const emptyUser: User = {
-    id: 0,
-    apiKey: "",
-  };
-
-  const [user, setUser] = useState<User>(() => {
-    // This seems messed up
-    const existingUser = localStorage.getItem("user");
-    return existingUser ? JSON.parse(existingUser) : emptyUser;
-  });
+  const [user, setUser] = useState<User>(getUserFromLocalStorage());
 
   return (
     <>
@@ -25,7 +17,7 @@ function App() {
         <p>Share an anecdote...</p>
       </div>
       <EditUserDetails user={user} updateUser={setUser} />
-      <Quotes user={user} />
+      <Quotes user={user} updateUser={setUser} />
     </>
   );
 }

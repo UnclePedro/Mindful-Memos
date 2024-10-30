@@ -1,19 +1,18 @@
-import { User } from "../models/User";
+import { emptyUser, User } from "../models/User";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
 const url = "http://localhost:8080";
 
-const emptyUser: User = {
-  id: 0,
-  apiKey: "",
+export const getUserFromLocalStorage = (): User => {
+  const existingUser = localStorage.getItem("user");
+  return existingUser ? JSON.parse(existingUser) : emptyUser;
 };
 
 export const getUser = async (): Promise<User> => {
-  let storedUser = localStorage.getItem("user");
-  let user: User = storedUser ? JSON.parse(storedUser) : emptyUser; // Parse storedUser
+  let user = getUserFromLocalStorage();
 
-  if (!user || user.id === 0) {
+  if (user.id === 0) {
     try {
       const response = await fetch(`${url}/generateUser`, {
         method: "POST",
