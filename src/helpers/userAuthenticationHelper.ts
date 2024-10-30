@@ -2,7 +2,7 @@ import { emptyUser, User } from "../models/User";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
-const url = "http://localhost:8080";
+const url = "https://random-quote-generator-api.vercel.app";
 
 export const getUserFromLocalStorage = (): User => {
   const existingUser = localStorage.getItem("user");
