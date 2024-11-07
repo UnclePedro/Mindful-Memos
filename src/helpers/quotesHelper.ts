@@ -7,6 +7,16 @@ import { Quote } from "../models/Quote";
 // http://localhost:8080
 const url = "https://random-quote-generator-api.vercel.app";
 
+export const getRandomQuote = async () => {
+  const response = await axios.get(`${url}/randomQuote`);
+  return response.data;
+};
+
+export const getUserQuotes = async () => {
+  const response = await axios.get(`${url}/getUserQuotes`);
+  return response.data;
+};
+
 export const addQuote = async (
   newUserQuote: Quote,
   setIsLoading: (loading: boolean) => void
@@ -61,19 +71,9 @@ export const deleteQuote = async (
 
   const result = await response.json();
   if (response.ok) {
-    getUserQuotes(); // Refresh the quotes
+    getUserQuotes();
     setIsLoading(false);
   } else {
     console.error("Error deleting quote:", result.error);
   }
-};
-
-export const getRandomQuote = async () => {
-  const response = await axios.get(`${url}/randomQuote`);
-  return response.data;
-};
-
-export const getUserQuotes = async () => {
-  const response = await axios.get(`${url}/getUserQuotes`);
-  return response.data;
 };

@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const EditUserDetails = ({ user, updateUser }: Props) => {
-  const [editUser, setEditUser] = useState(false); // State to control modal visibility
+  const [editUser, setEditUser] = useState(false); // State to control user modal visibility
 
   return (
     <div className="relative flex justify-end items-start">

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import { Fade } from "react-awesome-reveal";
 import { emptyQuoteObj, Quote } from "../models/Quote";
 import {
   addQuote,
@@ -28,9 +27,8 @@ const Memos = ({ user, updateUser }: Props) => {
   }, []);
 
   return (
-    // <Fade triggerOnce={true}>
     <div className="lg:m-10">
-      {/* Display the random quote */}
+      {/* Display a random quote */}
       {randomQuote.quote.length > 0 ? (
         <div className="p-6 rounded-lg shadow-lg bg-white">
           <h2 className="text-2xl font-semibold mb-2">{randomQuote.quote}</h2>
@@ -128,7 +126,6 @@ const Memos = ({ user, updateUser }: Props) => {
         </div>
       </div>
     </div>
-    // </Fade>
   );
 };
 
