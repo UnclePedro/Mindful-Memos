@@ -1,8 +1,9 @@
+import axios from "axios";
 import { emptyUser, User } from "../models/User";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
-const url = "https://random-quote-generator-api.vercel.app";
+const url = "http://localhost:8080";
 
 export const getUserFromLocalStorage = (): User => {
   const existingUser = localStorage.getItem("user");
@@ -28,4 +29,8 @@ export const getUser = async (): Promise<User> => {
   } else {
     return user;
   }
+};
+
+export const login = async () => {
+  await axios.get(`${url}/login`);
 };

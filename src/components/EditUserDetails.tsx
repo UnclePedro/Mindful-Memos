@@ -3,6 +3,7 @@ import { Fade } from "react-awesome-reveal";
 import Icon from "./Icon";
 import userIcon from "/src/assets/iconography/user.svg";
 import { User } from "../models/User";
+import { login } from "../helpers/userAuthenticationHelper";
 
 interface Props {
   user: User;
@@ -68,6 +69,15 @@ export const EditUserDetails = ({ user, updateUser }: Props) => {
                   Leave a memo to generate user details.
                   <br />
                   Copy these details to edit your memos across devices.
+                </p>
+              </div>
+
+              <div className="mt-6">
+                <p>
+                  <button onClick={() => login()}>Sign in</button>
+                </p>
+                <p>
+                  <a href="/logout">Sign out</a>
                 </p>
               </div>
             </div>

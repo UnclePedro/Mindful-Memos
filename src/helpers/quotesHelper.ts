@@ -5,7 +5,7 @@ import { Quote } from "../models/Quote";
 
 // https://random-quote-generator-api.vercel.app
 // http://localhost:8080
-const url = "https://random-quote-generator-api.vercel.app";
+const url = "http://localhost:8080";
 
 export const getRandomQuote = async () => {
   const response = await axios.get(`${url}/randomQuote`);
