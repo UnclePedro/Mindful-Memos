@@ -3,7 +3,6 @@ import { Fade } from "react-awesome-reveal";
 import Icon from "./Icon";
 import userIcon from "/src/assets/iconography/user.svg";
 import { User } from "../models/User";
-import { login } from "../helpers/userAuthenticationHelper";
 
 interface Props {
   user: User;
@@ -74,10 +73,10 @@ export const EditUserDetails = ({ user, updateUser }: Props) => {
 
               <div className="mt-6">
                 <p>
-                  <button onClick={() => login()}>Sign in</button>
+                  <a href="http://localhost:8080/login">Sign in</a>
                 </p>
                 <p>
-                  <a href="/logout">Sign out</a>
+                  <a href="http://localhost:8080/logout">Sign out</a>
                 </p>
               </div>
             </div>

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { emptyUser, User } from "../models/User";
 
 // https://random-quote-generator-api.vercel.app
@@ -29,8 +28,4 @@ export const getUser = async (): Promise<User> => {
   } else {
     return user;
   }
-};
-
-export const login = async () => {
-  await axios.get(`${url}/login`);
 };
