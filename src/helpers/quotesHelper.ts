@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getUser } from "./userAuthenticationHelper";
 import { User } from "../models/User";
 import { Quote } from "../models/Quote";
 
@@ -21,6 +20,7 @@ export const addQuote = async (
   newUserQuote: Quote,
   setIsLoading: (loading: boolean) => void
 ) => {
+  // Prevent user from adding quote with empty fields
   if (newUserQuote.quote === "") {
     window.alert("Memo cannot be empty");
     return null;
@@ -30,28 +30,19 @@ export const addQuote = async (
     return null;
   }
 
-  setIsLoading(true);
+  setIsLoading(true); // Display loading spinner to user
 
-  const currentUser = await getUser();
+  try {
+    const response = await axios.post(`${url}/addQuote`, newUserQuote, {
+      withCredentials: true,
+    });
 
-  const response = await fetch(`${url}/addQuote`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      quote: newUserQuote.quote,
-      author: newUserQuote.author,
-      authorId: currentUser.id,
-      apiKey: currentUser.apiKey,
-    }),
-  });
-
-  if (response.ok) {
+    if (response.status === 200) {
+      setIsLoading(false);
+    }
+  } catch (error) {
+    console.error("Error:", error);
     setIsLoading(false);
-    return currentUser; // update state with user data
-  } else {
-    console.error("Failed to add quote");
   }
 };
 
