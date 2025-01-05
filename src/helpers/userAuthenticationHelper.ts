@@ -5,9 +5,21 @@ import { emptyUser, User } from "../models/User";
 // http://localhost:8080
 const url = "http://localhost:8080";
 
+// This user file needs to pull user data from the cookies
 export const getUserFromLocalStorage = (): User => {
   const existingUser = localStorage.getItem("user");
   return existingUser ? JSON.parse(existingUser) : emptyUser;
+};
+
+export const validateSession = async () => {
+  try {
+    const user = await axios.get(`${url}/validate-session`, {
+      withCredentials: true,
+    });
+    return user;
+  } catch (error) {
+    console.error("Error validating session:", error);
+  }
 };
 
 // export const getUser = async (): Promise<User> => {

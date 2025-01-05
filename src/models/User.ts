@@ -1,9 +1,9 @@
 export interface User {
-  id: number;
+  id: string;
   apiKey: string;
 }
 
 export const emptyUser: User = {
-  id: 0,
+  id: "",
   apiKey: "",
 };

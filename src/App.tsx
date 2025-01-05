@@ -1,13 +1,20 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { User } from "./models/User";
 import { EditUserDetails } from "./components/EditUserDetails";
 import Quotes from "./components/Quotes";
-import { getUserFromLocalStorage } from "./helpers/userAuthenticationHelper";
+import {
+  getUserFromLocalStorage,
+  validateSession,
+} from "./helpers/userAuthenticationHelper";
 
 function App() {
   const [user, setUser] = useState<User>(getUserFromLocalStorage());
+
+  useEffect(() => {
+    validateSession();
+  }, []);
 
   return (
     <>

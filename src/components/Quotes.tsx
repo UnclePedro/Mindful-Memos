@@ -16,8 +16,8 @@ interface Props {
 
 const Memos = ({ user, updateUser }: Props) => {
   const [randomQuote, setRandomQuote] = useState<Quote>(emptyQuoteObj);
-  const [newUserQuote, setNewUserQuote] = useState<Quote>(emptyQuoteObj);
   const [userQuotes, setUserQuotes] = useState<Quote[]>([]);
+  const [newUserQuote, setNewUserQuote] = useState<Quote>(emptyQuoteObj);
   const [addQuoteLoading, setAddQuoteLoading] = useState(false);
   const [deleteQuoteLoading, setDeleteQuoteLoading] = useState(false);
 
