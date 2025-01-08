@@ -5,7 +5,7 @@ import userIcon from "/src/assets/iconography/user.svg";
 import { User } from "../models/User";
 
 interface Props {
-  user: User;
+  user: User | undefined;
 }
 
 export const EditUserDetails = ({ user }: Props) => {
@@ -34,12 +34,19 @@ export const EditUserDetails = ({ user }: Props) => {
               </button>
 
               <div className="mt-6">
-                <p>
-                  <a href="http://localhost:8080/login">Sign in</a>
-                </p>
-                <p>
-                  <a href="http://localhost:8080/logout">Sign out</a>
-                </p>
+                {user && <p>{`${user.firstName} ${user.lastName}`}</p>}
+
+                {!user && (
+                  <p>
+                    <a href="http://localhost:8080/login">Sign in</a>
+                  </p>
+                )}
+
+                {user && (
+                  <p>
+                    <a href="http://localhost:8080/logout">Sign out</a>
+                  </p>
+                )}
               </div>
             </div>
           </div>

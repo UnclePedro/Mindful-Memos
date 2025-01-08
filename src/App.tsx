@@ -17,6 +17,7 @@ function App() {
         const user = await validateSession();
         if (!user) return;
         setUser(user);
+        console.log(user);
       };
       setUserData();
     }

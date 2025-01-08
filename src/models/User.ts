@@ -1,9 +1,6 @@
 export interface User {
+  firstName: string;
+  lastName: string;
   id: string;
-  apiKey: string;
+  image: string;
 }
-
-export const emptyUser: User = {
-  id: "",
-  apiKey: "",
-};

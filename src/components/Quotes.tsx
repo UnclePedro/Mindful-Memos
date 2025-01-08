@@ -10,11 +10,10 @@ import { User } from "../models/User";
 import { LoadingAnimation } from "./LoadingAnimation";
 
 interface Props {
-  user: User;
-  updateUser: (user: User) => void;
+  user: User | undefined;
 }
 
-const Memos = ({ user, updateUser }: Props) => {
+const Memos = ({ user }: Props) => {
   const [randomQuote, setRandomQuote] = useState<Quote>(emptyQuoteObj);
   const [userQuotes, setUserQuotes] = useState<Quote[]>([]);
   const [newUserQuote, setNewUserQuote] = useState<Quote>(emptyQuoteObj);
@@ -66,9 +65,7 @@ const Memos = ({ user, updateUser }: Props) => {
           />
           <button
             onClick={async () => {
-              await addQuote(newUserQuote, setAddQuoteLoading).then(
-                (returnedUser) => returnedUser && updateUser(returnedUser)
-              );
+              await addQuote(newUserQuote, setAddQuoteLoading);
               setUserQuotes(await getUserQuotes());
               setNewUserQuote(emptyQuoteObj);
             }}
@@ -98,7 +95,7 @@ const Memos = ({ user, updateUser }: Props) => {
                     <p className="text-xs text-gray-600 mt-1 italic">
                       {quote.author}
                     </p>
-                    {quote.authorId === user.id && (
+                    {quote.authorId === user?.id && (
                       <button
                         className="mt-3 px-4 py-2 text-xs text-white font-semibold bg-red-400 hover:bg-red-500 rounded-full transition-all"
                         onClick={async () => {
