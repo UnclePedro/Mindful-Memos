@@ -2,5 +2,5 @@ export interface User {
   firstName: string;
   lastName: string;
   id: string;
-  image: string;
+  profilePictureUrl: string;
 }

@@ -17,7 +17,6 @@ function App() {
         const user = await validateSession();
         if (!user) return;
         setUser(user);
-        console.log(user);
       };
       setUserData();
     }
@@ -30,7 +29,7 @@ function App() {
         <h1 className="text-4xl font-bold">Mindful Memos</h1>
         <p>Share an anecdote...</p>
       </div>
-      <EditUserDetails user={user} />
+      {user && <EditUserDetails user={user} />}
       <Quotes user={user} />
     </>
   );

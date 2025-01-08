@@ -42,39 +42,50 @@ const Memos = ({ user }: Props) => {
       )}
 
       {/* Section for leaving a new quote */}
-      <div className="p-6 mt-6 bg-white rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Leave a memo:</h2>
-        <div className="flex flex-col gap-4">
-          <input
-            type="text"
-            value={newUserQuote.quote}
-            onChange={(e) =>
-              setNewUserQuote({ ...newUserQuote, quote: e.target.value })
-            }
-            placeholder="Enter a new memo"
-            className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
-          />
-          <input
-            type="text"
-            value={newUserQuote.author}
-            onChange={(e) =>
-              setNewUserQuote({ ...newUserQuote, author: e.target.value })
-            }
-            placeholder="Author"
-            className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
-          />
-          <button
-            onClick={async () => {
-              await addQuote(newUserQuote, setAddQuoteLoading);
-              setUserQuotes(await getUserQuotes());
-              setNewUserQuote(emptyQuoteObj);
-            }}
-            className="p-3 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
-          >
-            {addQuoteLoading ? <LoadingAnimation size={24} /> : "Add Memo"}
-          </button>
+      {!user ? (
+        <a
+          href="http://localhost:8080/login"
+          className="p-3 mt-6 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
+        >
+          Sign in to leave a memo
+        </a>
+      ) : (
+        <div className="p-6 mt-6 bg-white rounded-lg shadow-lg">
+          <h2 className="text-xl font-semibold mb-4">
+            Leave a memo {user.firstName}:
+          </h2>
+          <div className="flex flex-col gap-4">
+            <input
+              type="text"
+              value={newUserQuote.quote}
+              onChange={(e) =>
+                setNewUserQuote({ ...newUserQuote, quote: e.target.value })
+              }
+              placeholder="Enter a new memo"
+              className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
+            />
+            <input
+              type="text"
+              value={newUserQuote.author}
+              onChange={(e) =>
+                setNewUserQuote({ ...newUserQuote, author: e.target.value })
+              }
+              placeholder="Author"
+              className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
+            />
+            <button
+              onClick={async () => {
+                await addQuote(newUserQuote, setAddQuoteLoading);
+                setUserQuotes(await getUserQuotes());
+                setNewUserQuote(emptyQuoteObj);
+              }}
+              className="p-3 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
+            >
+              {addQuoteLoading ? <LoadingAnimation size={24} /> : "Add Memo"}
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Display user-added quotes */}
       <div className="p-6 mt-6 bg-white rounded-lg shadow-lg">
@@ -95,7 +106,7 @@ const Memos = ({ user }: Props) => {
                     <p className="text-xs text-gray-600 mt-1 italic">
                       {quote.author}
                     </p>
-                    {quote.authorId === user?.id && (
+                    {quote.userId === user?.id && (
                       <button
                         className="mt-3 px-4 py-2 text-xs text-white font-semibold bg-red-400 hover:bg-red-500 rounded-full transition-all"
                         onClick={async () => {

@@ -34,18 +34,27 @@ export const EditUserDetails = ({ user }: Props) => {
               </button>
 
               <div className="mt-6">
-                {user && <p>{`${user.firstName} ${user.lastName}`}</p>}
-
-                {!user && (
-                  <p>
-                    <a href="http://localhost:8080/login">Sign in</a>
-                  </p>
+                {user && (
+                  <div className="p-4 bg-blue-100 rounded-lg shadow-md">
+                    <p className="text-sm text-gray-500">Signed in as:</p>
+                    <p className="text-lg font-semibold text-gray-900">{`${user.firstName} ${user.lastName}`}</p>
+                  </div>
                 )}
 
-                {user && (
-                  <p>
-                    <a href="http://localhost:8080/logout">Sign out</a>
-                  </p>
+                {!user ? (
+                  <a
+                    href="http://localhost:8080/login"
+                    className="p-2 m-2 mt-6 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
+                  >
+                    Sign in
+                  </a>
+                ) : (
+                  <a
+                    href="http://localhost:8080/logout"
+                    className="p-2 mt-4 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
+                  >
+                    Sign out
+                  </a>
                 )}
               </div>
             </div>

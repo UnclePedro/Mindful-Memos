@@ -1,13 +1,13 @@
 export interface Quote {
   quote: string;
   author: string;
-  authorId: string;
   id: number;
+  userId: string;
 }
 
 export const emptyQuoteObj: Quote = {
   quote: "",
   author: "",
-  authorId: "",
+  userId: "",
   id: 0,
 };
