@@ -6,10 +6,9 @@ import { User } from "../models/User";
 
 interface Props {
   user: User;
-  updateUser: (user: User) => void;
 }
 
-export const EditUserDetails = ({ user, updateUser }: Props) => {
+export const EditUserDetails = ({ user }: Props) => {
   const [editUser, setEditUser] = useState(false); // State to control user modal visibility
 
   return (
@@ -33,43 +32,6 @@ export const EditUserDetails = ({ user, updateUser }: Props) => {
               >
                 ✖
               </button>
-              <p className="mb-2 font-bold">User ID:</p>
-              <input
-                type="number"
-                onChange={(e) => {
-                  const updatedUser = {
-                    ...user,
-                    id: Number(e.target.value),
-                  };
-                  updateUser(updatedUser);
-                  localStorage.setItem("user", JSON.stringify(updatedUser));
-                }}
-                placeholder="No user ID"
-                value={user.id > 0 ? user.id : undefined}
-                className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
-              />
-              <p className="my-2 font-bold">User Password:</p>
-              <input
-                type="text"
-                onChange={(e) => {
-                  const updatedUser = {
-                    ...user,
-                    apiKey: e.target.value,
-                  };
-                  updateUser(updatedUser);
-                  localStorage.setItem("user", JSON.stringify(updatedUser));
-                }}
-                placeholder="No user password"
-                value={user.apiKey.length > 0 ? user.apiKey : undefined}
-                className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
-              />
-              <div className="mt-4 italic text-xs">
-                <p>
-                  Leave a memo to generate user details.
-                  <br />
-                  Copy these details to edit your memos across devices.
-                </p>
-              </div>
 
               <div className="mt-6">
                 <p>

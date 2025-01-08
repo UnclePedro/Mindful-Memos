@@ -4,16 +4,22 @@ import { Analytics } from "@vercel/analytics/react";
 import { User } from "./models/User";
 import { EditUserDetails } from "./components/EditUserDetails";
 import Quotes from "./components/Quotes";
-import {
-  getUserFromLocalStorage,
-  validateSession,
-} from "./helpers/userAuthenticationHelper";
+import { validateSession } from "./helpers/userAuthenticationHelper";
+
+import Cookies from "js-cookie";
 
 function App() {
-  const [user, setUser] = useState<User>(getUserFromLocalStorage());
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    validateSession();
+    if (Cookies.get("wos-session")) {
+      const setUserData = async () => {
+        const user = await validateSession();
+        if (!user) return;
+        setUser(user);
+      };
+      setUserData();
+    }
   }, []);
 
   return (
@@ -23,8 +29,8 @@ function App() {
         <h1 className="text-4xl font-bold">Mindful Memos</h1>
         <p>Share an anecdote...</p>
       </div>
-      <EditUserDetails user={user} updateUser={setUser} />
-      <Quotes user={user} updateUser={setUser} />
+      <EditUserDetails user={user} />
+      <Quotes user={user} />
     </>
   );
 }
