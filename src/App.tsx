@@ -12,6 +12,7 @@ function App() {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
+    // Add to AuthProvider at some point
     if (Cookies.get("wos-session")) {
       const setUserData = async () => {
         const user = await validateSession();

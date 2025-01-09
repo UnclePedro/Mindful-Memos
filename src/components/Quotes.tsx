@@ -110,11 +110,7 @@ const Memos = ({ user }: Props) => {
                       <button
                         className="mt-3 px-4 py-2 text-xs text-white font-semibold bg-red-400 hover:bg-red-500 rounded-full transition-all"
                         onClick={async () => {
-                          await deleteQuote(
-                            quote.id,
-                            user,
-                            setDeleteQuoteLoading
-                          );
+                          await deleteQuote(quote.id, setDeleteQuoteLoading);
                           setUserQuotes(await getUserQuotes());
                         }}
                       >

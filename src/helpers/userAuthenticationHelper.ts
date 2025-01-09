@@ -1,13 +1,13 @@
 import axios from "axios";
 import { User } from "../models/User";
 
-// https://random-quote-generator-api.vercel.app
+// https://api.mindful-memos.peterforsyth.dev
 // http://localhost:8080
 const url = "http://localhost:8080";
 
 export const validateSession = async (): Promise<User | void> => {
   try {
-    const user = await axios.get<User>(`${url}/validate-session`, {
+    const user = await axios.get<User>(`${url}/validateSession`, {
       withCredentials: true,
     });
     return user.data;

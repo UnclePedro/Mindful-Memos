@@ -1,8 +1,7 @@
 import axios from "axios";
-import { User } from "../models/User";
 import { Quote } from "../models/Quote";
 
-// https://random-quote-generator-api.vercel.app
+// https://api.mindful-memos.peterforsyth.dev
 // http://localhost:8080
 const url = "http://localhost:8080";
 
@@ -48,23 +47,19 @@ export const addQuote = async (
 
 export const deleteQuote = async (
   quoteId: number,
-  user: User,
   setIsLoading: (loading: boolean) => void
 ) => {
   setIsLoading(true);
-  const response = await fetch(`${url}/deleteQuote`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ id: quoteId, apiKey: user.apiKey }),
-  });
-
-  const result = await response.json();
-  if (response.ok) {
-    getUserQuotes();
+  try {
+    const response = await axios.delete(`${url}/deleteQuote/${quoteId}`, {
+      withCredentials: true,
+    });
+    if (response.status === 200) {
+      getUserQuotes();
+      setIsLoading(false);
+    }
+  } catch (error) {
+    console.error("Error deleting quote:", error);
     setIsLoading(false);
-  } else {
-    console.error("Error deleting quote:", result.error);
   }
 };
