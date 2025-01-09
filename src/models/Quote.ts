@@ -3,6 +3,9 @@ export interface Quote {
   author: string;
   id: number;
   userId: string;
+  user: {
+    profilePictureUrl: string; // Nested inside the user object
+  };
 }
 
 export const emptyQuoteObj: Quote = {
@@ -10,4 +13,7 @@ export const emptyQuoteObj: Quote = {
   author: "",
   userId: "",
   id: 0,
+  user: {
+    profilePictureUrl: "", // Default to an empty string if no URL
+  },
 };

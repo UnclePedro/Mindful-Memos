@@ -8,10 +8,7 @@ import {
 } from "../helpers/quotesHelper";
 import { User } from "../models/User";
 import { LoadingAnimation } from "./LoadingAnimation";
-
-// https://api.mindful-memos.peterforsyth.dev
-// http://localhost:8080
-const url = "https://api.mindful-memos.peterforsyth.dev";
+import { endpointUrl } from "../config/endpointUrl";
 
 interface Props {
   user: User | undefined;
@@ -30,7 +27,7 @@ const Memos = ({ user }: Props) => {
   }, []);
 
   return (
-    <div className="lg:m-10">
+    <div className="lg:m-10 mt-5">
       {/* Display a random quote */}
       {randomQuote.quote.length > 0 ? (
         <div className="p-6 rounded-lg shadow-lg bg-white">
@@ -48,7 +45,7 @@ const Memos = ({ user }: Props) => {
       {/* Section for leaving a new quote */}
       {!user ? (
         <a
-          href={`${url}/login`}
+          href={`${endpointUrl}/login`}
           className="p-3 mt-6 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
         >
           Sign in to leave a memo
@@ -66,7 +63,7 @@ const Memos = ({ user }: Props) => {
                 setNewUserQuote({ ...newUserQuote, quote: e.target.value })
               }
               placeholder="Enter a new memo"
-              className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
+              className="p-3 rounded-lg text-black bg-slate-200 sm:hover:bg-slate-300 transition-all border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
             />
             <input
               type="text"
@@ -75,7 +72,7 @@ const Memos = ({ user }: Props) => {
                 setNewUserQuote({ ...newUserQuote, author: e.target.value })
               }
               placeholder="Author"
-              className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
+              className="p-3 rounded-lg text-black bg-slate-200 sm:hover:bg-slate-300 transition-all border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
             />
             <button
               onClick={async () => {
@@ -102,7 +99,7 @@ const Memos = ({ user }: Props) => {
                 .map((quote) => (
                   <li
                     key={quote.id}
-                    className="w-full bg-blue-100 p-4 rounded-lg shadow-md flex flex-col items-center"
+                    className="w-full bg-blue-200 sm:hover:scale-[1.02] transition-all p-4 rounded-lg shadow-md flex flex-col items-center"
                   >
                     <p className="font-bold text-lg text-center">
                       {quote.quote}
@@ -110,6 +107,14 @@ const Memos = ({ user }: Props) => {
                     <p className="text-xs text-gray-600 mt-1 italic">
                       {quote.author}
                     </p>
+                    {quote.user.profilePictureUrl ? (
+                      <img
+                        src={quote.user.profilePictureUrl}
+                        alt="Profile"
+                        className="w-8 h-8 mt-2 rounded-full object-cover"
+                      />
+                    ) : null}
+
                     {quote.userId === user?.id && (
                       <button
                         className="mt-3 px-4 py-2 text-xs text-white font-semibold bg-red-400 hover:bg-red-500 rounded-full transition-all"

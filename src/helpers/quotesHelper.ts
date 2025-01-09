@@ -1,17 +1,14 @@
 import axios from "axios";
 import { Quote } from "../models/Quote";
-
-// https://api.mindful-memos.peterforsyth.dev
-// http://localhost:8080
-const url = "https://api.mindful-memos.peterforsyth.dev";
+import { endpointUrl } from "../config/endpointUrl";
 
 export const getRandomQuote = async () => {
-  const response = await axios.get(`${url}/randomQuote`);
+  const response = await axios.get(`${endpointUrl}/randomQuote`);
   return response.data;
 };
 
 export const getUserQuotes = async () => {
-  const response = await axios.get(`${url}/getUserQuotes`);
+  const response = await axios.get(`${endpointUrl}/getUserQuotes`);
   return response.data;
 };
 
@@ -32,7 +29,7 @@ export const addQuote = async (
   setIsLoading(true); // Display loading spinner to user
 
   try {
-    const response = await axios.post(`${url}/addQuote`, newUserQuote, {
+    const response = await axios.post(`${endpointUrl}/addQuote`, newUserQuote, {
       withCredentials: true,
     });
 
@@ -51,9 +48,12 @@ export const deleteQuote = async (
 ) => {
   setIsLoading(true);
   try {
-    const response = await axios.delete(`${url}/deleteQuote/${quoteId}`, {
-      withCredentials: true,
-    });
+    const response = await axios.delete(
+      `${endpointUrl}/deleteQuote/${quoteId}`,
+      {
+        withCredentials: true,
+      }
+    );
     if (response.status === 200) {
       getUserQuotes();
       setIsLoading(false);

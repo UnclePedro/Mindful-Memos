@@ -3,10 +3,7 @@ import { Fade } from "react-awesome-reveal";
 import Icon from "./Icon";
 import userIcon from "/src/assets/iconography/user.svg";
 import { User } from "../models/User";
-
-// https://api.mindful-memos.peterforsyth.dev
-// http://localhost:8080
-const url = "https://api.mindful-memos.peterforsyth.dev";
+import { endpointUrl } from "../config/endpointUrl";
 
 interface Props {
   user: User | undefined;
@@ -21,8 +18,16 @@ export const EditUserDetails = ({ user }: Props) => {
         onClick={() => setEditUser(true)}
         className="-mt-28 -mr-18  transition"
       >
-        <div className="w-11 sm:w-14">
-          <Icon iconImg={userIcon} alt={"close"} />
+        <div className="w-11 sm:w-11 lg:mr-12 mt-2 sm:hover:scale-[1.06] transition-all">
+          {user?.profilePictureUrl ? (
+            <img
+              src={user.profilePictureUrl}
+              alt={`${user.firstName}'s profile picture`}
+              className="w-full h-full rounded-full object-cover"
+            />
+          ) : (
+            <Icon iconImg={userIcon} alt={"user icon"} />
+          )}
         </div>
       </button>
 
@@ -40,21 +45,21 @@ export const EditUserDetails = ({ user }: Props) => {
               <div className="mt-6">
                 {user && (
                   <div className="p-4 bg-blue-100 rounded-lg shadow-md">
-                    <p className="text-sm text-gray-500">Signed in as:</p>
-                    <p className="text-lg font-semibold text-gray-900">{`${user.firstName} ${user.lastName}`}</p>
+                    <p className="text-xs text-gray-500">You are signed in</p>
+                    <p className="text-lg font-semibold text-gray-900">{` Hi ${user.firstName}!`}</p>
                   </div>
                 )}
 
                 {!user ? (
                   <a
-                    href={`${url}/login`}
+                    href={`${endpointUrl}/login`}
                     className="p-2 m-2 mt-6 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
                   >
                     Sign in
                   </a>
                 ) : (
                   <a
-                    href={`${url}/logout`}
+                    href={`${endpointUrl}/logout`}
                     className="p-2 mt-4 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
                   >
                     Sign out
