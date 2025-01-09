@@ -18,7 +18,7 @@ export const EditUserDetails = ({ user }: Props) => {
         onClick={() => setEditUser(true)}
         className="-mt-28 -mr-18  transition"
       >
-        <div className="w-11 sm:w-11 lg:mr-12 mt-2 sm:hover:scale-[1.06] transition-all">
+        <div className="w-8 sm:w-11 lg:mr-12 -mr-4  sm:hover:scale-[1.06] transition-all">
           {user?.profilePictureUrl ? (
             <img
               src={user.profilePictureUrl}

@@ -76,8 +76,7 @@ const Memos = ({ user }: Props) => {
             />
             <button
               onClick={async () => {
-                await addQuote(newUserQuote, setAddQuoteLoading);
-                setUserQuotes(await getUserQuotes());
+                setUserQuotes(await addQuote(newUserQuote, setAddQuoteLoading));
                 setNewUserQuote(emptyQuoteObj);
               }}
               className="p-3 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
@@ -119,8 +118,9 @@ const Memos = ({ user }: Props) => {
                       <button
                         className="mt-3 px-4 py-2 text-xs text-white font-semibold bg-red-400 hover:bg-red-500 rounded-full transition-all"
                         onClick={async () => {
-                          await deleteQuote(quote.id, setDeleteQuoteLoading);
-                          setUserQuotes(await getUserQuotes());
+                          setUserQuotes(
+                            await deleteQuote(quote.id, setDeleteQuoteLoading)
+                          );
                         }}
                       >
                         {deleteQuoteLoading ? (

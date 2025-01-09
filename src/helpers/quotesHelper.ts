@@ -36,6 +36,7 @@ export const addQuote = async (
     if (response.status === 200) {
       setIsLoading(false);
     }
+    return response.data.updatedUserQuotes;
   } catch (error) {
     console.error("Error:", error);
     setIsLoading(false);
@@ -55,9 +56,9 @@ export const deleteQuote = async (
       }
     );
     if (response.status === 200) {
-      getUserQuotes();
       setIsLoading(false);
     }
+    return response.data.quotes;
   } catch (error) {
     console.error("Error deleting quote:", error);
     setIsLoading(false);
