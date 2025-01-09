@@ -9,6 +9,10 @@ import {
 import { User } from "../models/User";
 import { LoadingAnimation } from "./LoadingAnimation";
 
+// https://api.mindful-memos.peterforsyth.dev
+// http://localhost:8080
+const url = "https://api.mindful-memos.peterforsyth.dev";
+
 interface Props {
   user: User | undefined;
 }
@@ -44,7 +48,7 @@ const Memos = ({ user }: Props) => {
       {/* Section for leaving a new quote */}
       {!user ? (
         <a
-          href="http://localhost:8080/login"
+          href={`${url}/login`}
           className="p-3 mt-6 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
         >
           Sign in to leave a memo

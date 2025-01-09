@@ -3,7 +3,7 @@ import { Quote } from "../models/Quote";
 
 // https://api.mindful-memos.peterforsyth.dev
 // http://localhost:8080
-const url = "http://localhost:8080";
+const url = "https://api.mindful-memos.peterforsyth.dev";
 
 export const getRandomQuote = async () => {
   const response = await axios.get(`${url}/randomQuote`);

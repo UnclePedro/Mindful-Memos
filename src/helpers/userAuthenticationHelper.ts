@@ -3,7 +3,7 @@ import { User } from "../models/User";
 
 // https://api.mindful-memos.peterforsyth.dev
 // http://localhost:8080
-const url = "http://localhost:8080";
+const url = "https://api.mindful-memos.peterforsyth.dev";
 
 export const validateSession = async (): Promise<User | void> => {
   try {

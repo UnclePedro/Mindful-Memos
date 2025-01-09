@@ -4,6 +4,10 @@ import Icon from "./Icon";
 import userIcon from "/src/assets/iconography/user.svg";
 import { User } from "../models/User";
 
+// https://api.mindful-memos.peterforsyth.dev
+// http://localhost:8080
+const url = "https://api.mindful-memos.peterforsyth.dev";
+
 interface Props {
   user: User | undefined;
 }
@@ -43,14 +47,14 @@ export const EditUserDetails = ({ user }: Props) => {
 
                 {!user ? (
                   <a
-                    href="http://localhost:8080/login"
+                    href={`${url}/login`}
                     className="p-2 m-2 mt-6 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
                   >
                     Sign in
                   </a>
                 ) : (
                   <a
-                    href="http://localhost:8080/logout"
+                    href={`${url}/logout`}
                     className="p-2 mt-4 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
                   >
                     Sign out
