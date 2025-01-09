@@ -1,11 +1,9 @@
 import axios from "axios";
-import { getUser } from "./userAuthenticationHelper";
-import { User } from "../models/User";
 import { Quote } from "../models/Quote";
 
-// https://random-quote-generator-api.vercel.app
+// https://api.mindful-memos.peterforsyth.dev
 // http://localhost:8080
-const url = "https://random-quote-generator-api.vercel.app";
+const url = "https://api.mindful-memos.peterforsyth.dev";
 
 export const getRandomQuote = async () => {
   const response = await axios.get(`${url}/randomQuote`);
@@ -21,6 +19,7 @@ export const addQuote = async (
   newUserQuote: Quote,
   setIsLoading: (loading: boolean) => void
 ) => {
+  // Prevent user from adding quote with empty fields
   if (newUserQuote.quote === "") {
     window.alert("Memo cannot be empty");
     return null;
@@ -30,50 +29,37 @@ export const addQuote = async (
     return null;
   }
 
-  setIsLoading(true);
+  setIsLoading(true); // Display loading spinner to user
 
-  const currentUser = await getUser();
+  try {
+    const response = await axios.post(`${url}/addQuote`, newUserQuote, {
+      withCredentials: true,
+    });
 
-  const response = await fetch(`${url}/addQuote`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      quote: newUserQuote.quote,
-      author: newUserQuote.author,
-      authorId: currentUser.id,
-      apiKey: currentUser.apiKey,
-    }),
-  });
-
-  if (response.ok) {
+    if (response.status === 200) {
+      setIsLoading(false);
+    }
+  } catch (error) {
+    console.error("Error:", error);
     setIsLoading(false);
-    return currentUser; // update state with user data
-  } else {
-    console.error("Failed to add quote");
   }
 };
 
 export const deleteQuote = async (
   quoteId: number,
-  user: User,
   setIsLoading: (loading: boolean) => void
 ) => {
   setIsLoading(true);
-  const response = await fetch(`${url}/deleteQuote`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ id: quoteId, apiKey: user.apiKey }),
-  });
-
-  const result = await response.json();
-  if (response.ok) {
-    getUserQuotes();
+  try {
+    const response = await axios.delete(`${url}/deleteQuote/${quoteId}`, {
+      withCredentials: true,
+    });
+    if (response.status === 200) {
+      getUserQuotes();
+      setIsLoading(false);
+    }
+  } catch (error) {
+    console.error("Error deleting quote:", error);
     setIsLoading(false);
-  } else {
-    console.error("Error deleting quote:", result.error);
   }
 };

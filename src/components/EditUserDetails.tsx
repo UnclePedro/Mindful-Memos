@@ -4,12 +4,15 @@ import Icon from "./Icon";
 import userIcon from "/src/assets/iconography/user.svg";
 import { User } from "../models/User";
 
+// https://api.mindful-memos.peterforsyth.dev
+// http://localhost:8080
+const url = "https://api.mindful-memos.peterforsyth.dev";
+
 interface Props {
-  user: User;
-  updateUser: (user: User) => void;
+  user: User | undefined;
 }
 
-export const EditUserDetails = ({ user, updateUser }: Props) => {
+export const EditUserDetails = ({ user }: Props) => {
   const [editUser, setEditUser] = useState(false); // State to control user modal visibility
 
   return (
@@ -33,42 +36,30 @@ export const EditUserDetails = ({ user, updateUser }: Props) => {
               >
                 ✖
               </button>
-              <p className="mb-2 font-bold">User ID:</p>
-              <input
-                type="number"
-                onChange={(e) => {
-                  const updatedUser = {
-                    ...user,
-                    id: Number(e.target.value),
-                  };
-                  updateUser(updatedUser);
-                  localStorage.setItem("user", JSON.stringify(updatedUser));
-                }}
-                placeholder="No user ID"
-                value={user.id > 0 ? user.id : undefined}
-                className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
-              />
-              <p className="my-2 font-bold">User Password:</p>
-              <input
-                type="text"
-                onChange={(e) => {
-                  const updatedUser = {
-                    ...user,
-                    apiKey: e.target.value,
-                  };
-                  updateUser(updatedUser);
-                  localStorage.setItem("user", JSON.stringify(updatedUser));
-                }}
-                placeholder="No user password"
-                value={user.apiKey.length > 0 ? user.apiKey : undefined}
-                className="p-3 rounded-lg text-black bg-slate-200 border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
-              />
-              <div className="mt-4 italic text-xs">
-                <p>
-                  Leave a memo to generate user details.
-                  <br />
-                  Copy these details to edit your memos across devices.
-                </p>
+
+              <div className="mt-6">
+                {user && (
+                  <div className="p-4 bg-blue-100 rounded-lg shadow-md">
+                    <p className="text-sm text-gray-500">Signed in as:</p>
+                    <p className="text-lg font-semibold text-gray-900">{`${user.firstName} ${user.lastName}`}</p>
+                  </div>
+                )}
+
+                {!user ? (
+                  <a
+                    href={`${url}/login`}
+                    className="p-2 m-2 mt-6 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
+                  >
+                    Sign in
+                  </a>
+                ) : (
+                  <a
+                    href={`${url}/logout`}
+                    className="p-2 mt-4 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
+                  >
+                    Sign out
+                  </a>
+                )}
               </div>
             </div>
           </div>

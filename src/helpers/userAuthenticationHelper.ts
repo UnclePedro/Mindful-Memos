@@ -1,31 +1,17 @@
-import { emptyUser, User } from "../models/User";
+import axios from "axios";
+import { User } from "../models/User";
 
-// https://random-quote-generator-api.vercel.app
+// https://api.mindful-memos.peterforsyth.dev
 // http://localhost:8080
-const url = "https://random-quote-generator-api.vercel.app";
+const url = "https://api.mindful-memos.peterforsyth.dev";
 
-export const getUserFromLocalStorage = (): User => {
-  const existingUser = localStorage.getItem("user");
-  return existingUser ? JSON.parse(existingUser) : emptyUser;
-};
-
-export const getUser = async (): Promise<User> => {
-  let user = getUserFromLocalStorage();
-
-  if (user.id === 0) {
-    try {
-      const response = await fetch(`${url}/generateUser`, {
-        method: "POST",
-      });
-
-      const data = await response.json();
-      localStorage.setItem("user", JSON.stringify(data.newUser));
-      return data.newUser;
-    } catch (error) {
-      console.error("Failed to create new user");
-      return emptyUser;
-    }
-  } else {
-    return user;
+export const validateSession = async (): Promise<User | void> => {
+  try {
+    const user = await axios.get<User>(`${url}/validateSession`, {
+      withCredentials: true,
+    });
+    return user.data;
+  } catch (error) {
+    console.error("Error validating session:", error);
   }
 };
