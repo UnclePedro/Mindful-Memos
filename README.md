@@ -14,4 +14,5 @@ Read and curate mindful thoughts and share them with other users using this eleg
 - [Express.js](https://expressjs.com/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Prisma](https://www.prisma.io/)
+- [WorkOS User Management](https://workos.com/user-management)
 - [TailwindCSS](https://tailwindcss.com/)
