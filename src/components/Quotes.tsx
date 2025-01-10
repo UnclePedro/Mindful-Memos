@@ -39,7 +39,8 @@ const Memos = ({ user }: Props) => {
     }
   };
 
-  if (!randomQuote.quote && userQuotes.length === 0) {
+  // Show loading spinner if both quotes are not yet set
+  if (randomQuote.quote === "" && userQuotes.length === 0) {
     return (
       <div className="flex items-center justify-center mt-12">
         <LoadingAnimation size={40} color="blue" />
