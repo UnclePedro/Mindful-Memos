@@ -16,10 +16,10 @@ export const EditUserDetails = ({ user }: Props) => {
     <div className="relative flex justify-end items-start z-50">
       <button
         onClick={() => setEditUser(true)}
-        className="-mt-28 -mr-18  transition"
+        className="-mt-28 lg:-mt-20  transition"
       >
         <Fade triggerOnce={true}>
-          <div className="w-8 sm:w-11 lg:mr-12 lg:mt-6 -mr-4  sm:hover:scale-[1.06] transition-all">
+          <div className="w-8 -mr-4 sm:w-11 sm:hover:scale-[1.06] transition-all">
             {user?.profilePictureUrl ? (
               <img
                 src={user.profilePictureUrl}
