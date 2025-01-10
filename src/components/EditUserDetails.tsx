@@ -13,27 +13,29 @@ export const EditUserDetails = ({ user }: Props) => {
   const [editUser, setEditUser] = useState(false); // State to control user modal visibility
 
   return (
-    <div className="relative flex justify-end items-start">
+    <div className="relative flex justify-end items-start z-50">
       <button
         onClick={() => setEditUser(true)}
         className="-mt-28 -mr-18  transition"
       >
-        <div className="w-8 sm:w-11 lg:mr-12 -mr-4  sm:hover:scale-[1.06] transition-all">
-          {user?.profilePictureUrl ? (
-            <img
-              src={user.profilePictureUrl}
-              alt={`${user.firstName}'s profile picture`}
-              className="w-full h-full rounded-full object-cover"
-            />
-          ) : (
-            <Icon iconImg={userIcon} alt={"user icon"} />
-          )}
-        </div>
+        <Fade triggerOnce={true}>
+          <div className="w-8 sm:w-11 lg:mr-12 lg:mt-6 -mr-4  sm:hover:scale-[1.06] transition-all">
+            {user?.profilePictureUrl ? (
+              <img
+                src={user.profilePictureUrl}
+                alt={`${user.firstName}'s profile picture`}
+                className="w-full h-full rounded-full object-cover"
+              />
+            ) : (
+              <Icon iconImg={userIcon} alt={"user icon"} />
+            )}
+          </div>
+        </Fade>
       </button>
 
       {editUser && (
         <Fade duration={300} triggerOnce={true}>
-          <div className="fixed inset-0 bg-black bg-opacity-65 flex justify-center h-screen items-center z-50">
+          <div className="fixed inset-0 bg-black bg-opacity-65 flex justify-center h-screen items-center">
             <div className="bg-white p-6 rounded-lg shadow-lg relative">
               <button
                 onClick={() => setEditUser(false)}

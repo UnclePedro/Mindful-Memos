@@ -43,11 +43,7 @@ export const addQuote = async (
   }
 };
 
-export const deleteQuote = async (
-  quoteId: number,
-  setIsLoading: (loading: boolean) => void
-) => {
-  setIsLoading(true);
+export const deleteQuote = async (quoteId: number) => {
   try {
     const response = await axios.delete(
       `${endpointUrl}/deleteQuote/${quoteId}`,
@@ -56,11 +52,9 @@ export const deleteQuote = async (
       }
     );
     if (response.status === 200) {
-      setIsLoading(false);
     }
     return response.data.quotes;
   } catch (error) {
     console.error("Error deleting quote:", error);
-    setIsLoading(false);
   }
 };
