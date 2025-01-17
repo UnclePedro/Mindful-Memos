@@ -52,21 +52,12 @@ export const EditUserDetails = ({ user }: Props) => {
                   </div>
                 )}
 
-                {!user ? (
-                  <a
-                    href={`${endpointUrl}/login`}
-                    className="p-2 m-2 mt-6 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
-                  >
-                    Sign in
-                  </a>
-                ) : (
-                  <a
-                    href={`${endpointUrl}/logout`}
-                    className="p-2 mt-4 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
-                  >
-                    Sign out
-                  </a>
-                )}
+                <a
+                  href={`${endpointUrl}/logout`}
+                  className="p-2 mt-4 rounded-lg transition-all hover:bg-blue-600 bg-blue-500 text-white font-bold shadow-lg flex items-center justify-center"
+                >
+                  Sign out
+                </a>
               </div>
             </div>
           </div>

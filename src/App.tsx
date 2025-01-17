@@ -5,7 +5,6 @@ import { User } from "./models/User";
 import { EditUserDetails } from "./components/EditUserDetails";
 import Quotes from "./components/Quotes";
 import { validateSession } from "./helpers/userAuthenticationHelper";
-
 import Cookies from "js-cookie";
 
 function App() {
