@@ -1,26 +1,11 @@
 import "./App.css";
-import { useEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import { User } from "./models/User";
 import { EditUserDetails } from "./components/EditUserDetails";
 import Quotes from "./components/Quotes";
-import { validateSession } from "./helpers/userAuthenticationHelper";
-import Cookies from "js-cookie";
+import { useAuth } from "./hooks/AuthProvider";
 
 function App() {
-  const [user, setUser] = useState<User>();
-
-  useEffect(() => {
-    // Add to AuthProvider at some point
-    if (Cookies.get("wos-session")) {
-      const setUserData = async () => {
-        const user = await validateSession();
-        if (!user) return;
-        setUser(user);
-      };
-      setUserData();
-    }
-  }, []);
+  const user = useAuth();
 
   return (
     <>

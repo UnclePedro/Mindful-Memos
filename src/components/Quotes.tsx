@@ -42,7 +42,7 @@ const Memos = ({ user }: Props) => {
   // Show loading spinner if both quotes are not yet set
   if (randomQuote.quote === "" || userQuotes.length === 0) {
     return (
-      <div className="absolute inset-0 -mt-[40vh] flex items-center justify-center">
+      <div className="absolute inset-0 -mt-[55vh] flex items-center justify-center">
         <LoadingAnimation size={30} color="blue" />
       </div>
     );

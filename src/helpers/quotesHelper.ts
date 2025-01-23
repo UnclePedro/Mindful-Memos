@@ -1,14 +1,13 @@
-import axios from "axios";
 import { Quote } from "../models/Quote";
-import { endpointUrl } from "../config/endpointUrl";
+import axiosInstance from "../config/axiosConfig";
 
 export const getRandomQuote = async () => {
-  const response = await axios.get(`${endpointUrl}/randomQuote`);
+  const response = await axiosInstance.get(`/randomQuote`);
   return response.data;
 };
 
 export const getUserQuotes = async () => {
-  const response = await axios.get(`${endpointUrl}/getUserQuotes`);
+  const response = await axiosInstance.get(`/getUserQuotes`);
   return response.data;
 };
 
@@ -29,7 +28,7 @@ export const addQuote = async (
   setIsLoading(true); // Display loading spinner to user
 
   try {
-    const response = await axios.post(`${endpointUrl}/addQuote`, newUserQuote, {
+    const response = await axiosInstance.post(`/addQuote`, newUserQuote, {
       withCredentials: true,
     });
 
@@ -45,12 +44,9 @@ export const addQuote = async (
 
 export const deleteQuote = async (quoteId: number) => {
   try {
-    const response = await axios.delete(
-      `${endpointUrl}/deleteQuote/${quoteId}`,
-      {
-        withCredentials: true,
-      }
-    );
+    const response = await axiosInstance.delete(`/deleteQuote/${quoteId}`, {
+      withCredentials: true,
+    });
     if (response.status === 200) {
     }
     return response.data.quotes;
