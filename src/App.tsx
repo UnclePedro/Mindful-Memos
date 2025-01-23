@@ -2,7 +2,10 @@ import "./App.css";
 import { Analytics } from "@vercel/analytics/react";
 import { EditUserDetails } from "./components/EditUserDetails";
 import Quotes from "./components/Quotes";
+import { Banner } from "./components/Banner";
 import { useAuth } from "./hooks/AuthProvider";
+import blobs from "./assets/blobs.json";
+import LottieAnimation from "./components/LottieAnimation";
 
 function App() {
   const user = useAuth();
@@ -10,12 +13,15 @@ function App() {
   return (
     <>
       <Analytics />
-      <div className="m-4">
-        <h1 className="text-4xl font-bold">Mindful Memos</h1>
-        <p>Share an anecdote...</p>
+      <div className="background-animation">
+        <LottieAnimation animationData={blobs} />
       </div>
-      {user && <EditUserDetails user={user} />}
-      <Quotes user={user} />
+
+      <div className="content-container">
+        <Banner />
+        {user && <EditUserDetails user={user} />}
+        <Quotes user={user} />
+      </div>
     </>
   );
 }
