@@ -17,11 +17,9 @@ function App() {
         <LottieAnimation animationData={blobs} />
       </div>
 
-      <div className="content-container">
-        <Banner />
-        {user && <EditUserDetails user={user} />}
-        <Quotes user={user} />
-      </div>
+      <Banner />
+      {user && <EditUserDetails user={user} />}
+      <Quotes user={user} />
     </>
   );
 }

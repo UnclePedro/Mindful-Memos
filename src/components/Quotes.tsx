@@ -43,7 +43,7 @@ const Memos = ({ user }: Props) => {
   if (randomQuote.quote === "" || userQuotes.length === 0) {
     return (
       <div className="absolute inset-0 -mt-[55vh] flex items-center justify-center">
-        <LoadingAnimation size={30} color="blue" />
+        <LoadingAnimation size={30} color="white" />
       </div>
     );
   }

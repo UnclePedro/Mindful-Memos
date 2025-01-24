@@ -12,9 +12,3 @@
   overflow: hidden;
   will-change: transform, opacity; /* Optimize rendering for animations */
 }
-
-/* Content containers */
-.content-container {
-  position: relative;
-  z-index: 1; /* Ensure content is above the background animation */
-}
